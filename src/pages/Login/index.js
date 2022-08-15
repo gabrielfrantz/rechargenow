@@ -1,25 +1,27 @@
 import React from 'react'
+import { useState } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
+import { signInWithEmailAndPassword, getAuth, signInWithGoogleAsync } from 'firebase/auth';
+import * as Google from 'expo-google-app-auth'
 
-const schema = yup.object({
-    email: yup.string().email("E-mail inválido!").required("Informe um e-mail!"),
-    senha: yup.string().min(8, "A senha deve ter pelo menos 8 dígitos").required("Informe uma senha!"),
-})
 
 export default function Login() {
     const navigation = useNavigation();
-    const { control, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
-    })
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-    function handleSignIn(data) {
-        console.log(data.email);
-        console.log(data.senha);
+    async function handleSignIn() {
+        const auth = getAuth()
+        await signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user
+                console.log(email)
+                console.log(password)
+                console.log("Login efetuado com sucesso! ")
+            })
+            .catch(error => console.log(error.message))
     }
 
     return (
@@ -36,48 +38,26 @@ export default function Login() {
             <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
                 <Text style={styles.title}>Bem-vindo(a)!</Text>
                 <Text style={styles.subText}>E-mail</Text>
-                <Controller
-                    control={control}
-                    name="email"
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            style={[
-                                styles.input, {
-                                    borderWidth: errors.email && 1,
-                                    borderColor: errors.email && '#FF375B'
-                                }]}
-                            onChangeText={onChange}
-                            onBlur={onBlur}
-                            value={value}
-                        />
-                    )}
+                <TextInput
+                    style={
+                        styles.input
+                    }
+                    value={email}
+                    onChangeText={value => setEmail(value)}
                 />
-                {errors.email && <Text style={styles.erro}>{errors.email?.message}</Text>}
                 <Text style={styles.subText}>Senha</Text>
-                <Controller
-                    control={control}
-                    name="senha"
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            style={[
-                                styles.input, {
-                                    borderWidth: errors.senha && 1,
-                                    borderColor: errors.senha && '#FF375B'
-                                }]}
-                            onChangeText={onChange}
-                            onBlur={onBlur}
-                            value={value}
-                            secureTextEntry={true}
-                        />
-                    )}
+                <TextInput
+                    style={
+                        styles.input}
+                    value={password}
+                    onChangeText={value => setPassword(value)}
+                    secureTextEntry={true}
                 />
-                {errors.senha && <Text style={styles.erro}>{errors.senha?.message}</Text>}
                 <Text style={styles.text}>Esqueceu sua senha? <Text style={styles.textBold}>Redefina aqui!</Text></Text>
-
-                <TouchableOpacity style={styles.button} onPress={handleSubmit(handleSignIn)}>
+                <TouchableOpacity style={styles.button} onPress={() => handleSignIn()}>
                     <Text style={styles.buttonText}>Autenticar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle}>
+                <TouchableOpacity style={styles.buttonGoogle} onPress={() => handleSignInGoogle()}>
                     <Text style={styles.buttonText}>Autenticar com Google    </Text>
                     <View style={styles.buttonIconSeparator} />
                     <Image style={styles.buttonImagemIconStyle} source={require('../../assets/google.png')} />

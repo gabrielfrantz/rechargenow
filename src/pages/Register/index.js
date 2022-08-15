@@ -3,23 +3,13 @@ import { useState } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { auth } from '../../../firebase'
-
-//const schema = yup.object({
-//nome: yup.string().required("Informe um nome!"),
-//email: yup.string().email("E-mail inválido!").required("Informe um e-mail!"),
-//password: yup.string().min(8, "A senha deve ter pelo menos 8 dígitos").required("Informe uma senha!"),
-//})
+import * as Google from 'expo-google-app-auth'
+import * as Expo from 'expo'
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
 
 export default function Register() {
     const navigation = useNavigation();
-    //const { control, handleSubmit, formState: { errors } } = useForm({
-    //resolver: yupResolver(schema)
-    //})
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -34,6 +24,40 @@ export default function Register() {
                 console.log("Usuário cadastrado com sucesso! " + user.uid)
             })
             .catch(error => console.log(error.message))
+    }
+    signIn = async () => {
+        try {
+          await GoogleSignin.hasPlayServices();
+          const userInfo = await GoogleSignin.signIn();
+          this.setState({ userInfo });
+        } catch (error) {
+          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            // user cancelled the login flow
+          } else if (error.code === statusCodes.IN_PROGRESS) {
+            // operation (e.g. sign in) is in progress already
+          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            // play services not available or outdated
+          } else {
+            // some other error happened
+          }
+        }
+      };
+
+    async function signInWithGoogleAsync() {
+        try {
+            const result = await Expo.Google.logInAsync({
+                androidClientId: '153121752067-mbj0ja30r9lna6o73tai9vdojsmrdo6k.apps.googleusercontent.com',
+                scopes: ['profile', 'email'],
+            });
+
+            if (result.type === 'success') {
+                return result.accessToken;
+            } else {
+                return { cancelled: true };
+            }
+        } catch (e) {
+            return { error: true };
+        }
     }
 
     return (
@@ -66,7 +90,6 @@ export default function Register() {
                     onChangeText={value => setEmail(value)}
                 />
                 <Text style={styles.subText}>Senha</Text>
-
                 <TextInput
                     style={
                         styles.input}
@@ -77,8 +100,8 @@ export default function Register() {
                 <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
                     <Text style={styles.buttonText}>Registrar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle}>
-                    <Text style={styles.buttonText}>Registrar com Google    </Text>
+                <TouchableOpacity style={styles.buttonGoogle} onPress={() => signIn()}>
+                    <Text style={styles.buttonText}>Registrar com Google  </Text>
                     <View style={styles.buttonIconSeparator} />
                     <Image style={styles.buttonImagemIconStyle} source={require('../../assets/google.png')} />
                 </TouchableOpacity>
