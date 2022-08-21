@@ -1,11 +1,12 @@
-import React from 'react'
+import { React } from 'react'
 import { useState } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../config/firebase'
 import * as Expo from 'expo'
+import { auth, db } from '../../config/firebase'
+import { doc, setDoc, collection } from 'firebase/firestore'
 
 export default function Register() {
     const navigation = useNavigation();
@@ -16,13 +17,22 @@ export default function Register() {
     async function handleSignIn() {
         await createUserWithEmailAndPassword(auth, email, password)
             .then(userCredential => {
-                const user = userCredential.user
-                console.log(user.email)
-                console.log(user.password)
-                console.log("Usuário cadastrado com sucesso! " + user.uid)
+                if (userCredential && userCredential.user) {
+                    const user = userCredential.user
+                    console.log(nome)
+                    console.log(email)
+                    console.log(password)
+                    console.log("Usuário cadastrado com sucesso! " + user.uid)
+                    setDoc(doc(db, "user", user.uid), {
+                        nome: nome,
+                        email: email,
+                        password: password
+                    })
+                        .catch(error => console.log(error.message))
+                }
             })
-            .catch(error => console.log(error.message))
     }
+
 
     async function handleSignInGoogle() {
         try {
