@@ -3,7 +3,8 @@ import { useState } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged} from 'firebase/auth'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../config/firebase'
 import * as Expo from 'expo'
 
 export default function Register() {
@@ -13,12 +14,11 @@ export default function Register() {
     const [password, setPassword] = useState('')
 
     async function handleSignIn() {
-        const auth = getAuth()
         await createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(userCredential => {
                 const user = userCredential.user
-                console.log(email)
-                console.log(password)
+                console.log(user.email)
+                console.log(user.password)
                 console.log("Usuário cadastrado com sucesso! " + user.uid)
             })
             .catch(error => console.log(error.message))
