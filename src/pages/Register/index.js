@@ -3,10 +3,8 @@ import { useState } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-import * as Google from 'expo-google-app-auth'
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged} from 'firebase/auth'
 import * as Expo from 'expo'
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
 
 export default function Register() {
     const navigation = useNavigation();
@@ -14,7 +12,7 @@ export default function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    async function handleSignUp() {
+    async function handleSignIn() {
         const auth = getAuth()
         await createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -25,25 +23,8 @@ export default function Register() {
             })
             .catch(error => console.log(error.message))
     }
-    signIn = async () => {
-        try {
-          await GoogleSignin.hasPlayServices();
-          const userInfo = await GoogleSignin.signIn();
-          this.setState({ userInfo });
-        } catch (error) {
-          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-            // user cancelled the login flow
-          } else if (error.code === statusCodes.IN_PROGRESS) {
-            // operation (e.g. sign in) is in progress already
-          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-            // play services not available or outdated
-          } else {
-            // some other error happened
-          }
-        }
-      };
 
-    async function signInWithGoogleAsync() {
+    async function handleSignInGoogle() {
         try {
             const result = await Expo.Google.logInAsync({
                 androidClientId: '153121752067-mbj0ja30r9lna6o73tai9vdojsmrdo6k.apps.googleusercontent.com',
@@ -97,10 +78,10 @@ export default function Register() {
                     onChangeText={value => setPassword(value)}
                     secureTextEntry={true}
                 />
-                <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
+                <TouchableOpacity style={styles.button} onPress={() => handleSignIn()}>
                     <Text style={styles.buttonText}>Registrar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle} onPress={() => signIn()}>
+                <TouchableOpacity style={styles.buttonGoogle} onPress={() => handleSignInGoogle()}>
                     <Text style={styles.buttonText}>Registrar com Google  </Text>
                     <View style={styles.buttonIconSeparator} />
                     <Image style={styles.buttonImagemIconStyle} source={require('../../assets/google.png')} />

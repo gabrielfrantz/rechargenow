@@ -4,8 +4,6 @@ import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'reac
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
 import { signInWithEmailAndPassword, getAuth, signInWithGoogleAsync } from 'firebase/auth';
-import * as Google from 'expo-google-app-auth'
-
 
 export default function Login() {
     const navigation = useNavigation();
@@ -54,7 +52,7 @@ export default function Login() {
                     secureTextEntry={true}
                 />
                 <Text style={styles.text}>Esqueceu sua senha? <Text style={styles.textBold}>Redefina aqui!</Text></Text>
-                <TouchableOpacity style={styles.button} onPress={() => handleSignIn()}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Menu')}>
                     <Text style={styles.buttonText}>Autenticar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonGoogle} onPress={() => handleSignInGoogle()}>

@@ -52,7 +52,7 @@ export default function Menu() {
                     />
                     <Tab.Screen
                         name="Veículos"
-                        component={Vehicles}
+                        component={RegisterVehiclesData}
                         options={{
                             tabBarIcon: () => (
                                 <Image source={require('../../assets/menuVeiculos.png')} />
