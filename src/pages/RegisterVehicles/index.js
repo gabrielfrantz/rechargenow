@@ -24,7 +24,7 @@ export default function RegisterVehicles() {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button} onPress={() => Tab.Navigator('RegisterVehicles')}>
+                <TouchableOpacity style={styles.button} onPress={() => Tab.Navigator('RegisterVehiclesData')}>
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonSecond} onPress={() => Tab.Navigator('Maps')}>

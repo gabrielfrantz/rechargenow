@@ -3,10 +3,12 @@ import { useState } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import * as Expo from 'expo'
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from 'firebase/auth'
 import { auth, db } from '../../config/firebase'
-import { doc, setDoc, collection } from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore'
+import * as Expo from 'expo-google-sign-in'
+import * as Google from 'expo-auth-session'
+
 
 export default function Register() {
     const navigation = useNavigation();
@@ -33,22 +35,24 @@ export default function Register() {
             })
     }
 
-
     async function handleSignInGoogle() {
-        try {
-            const result = await Expo.Google.logInAsync({
-                androidClientId: '153121752067-mbj0ja30r9lna6o73tai9vdojsmrdo6k.apps.googleusercontent.com',
-                scopes: ['profile', 'email'],
-            });
+        const config = {
+            androidClientId: '153121752067-mbj0ja30r9lna6o73tai9vdojsmrdo6k.apps.googleusercontent.com',
+            scopes: ['profile', 'email']
+        };
 
-            if (result.type === 'success') {
-                return result.accessToken;
-            } else {
-                return { cancelled: true };
-            }
-        } catch (e) {
-            return { error: true };
-        }
+        Google
+            .loadAsync(config)
+            .then((result) => {
+                const { type, user } = result
+
+                if (type === 'sucess') {
+                    const { email, name } = user
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     return (

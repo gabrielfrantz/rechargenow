@@ -32,9 +32,9 @@ export default function RegisterVehiclesData() {
                 <Text style={styles.text}>(*) Preenchimento obrigatório</Text>
 
                 <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Salvar</Text>
+                    <Text style={styles.buttonText} onPress={() => Tab.Navigator('Maps')}>Salvar </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle}>
+                <TouchableOpacity style={styles.buttonGoogle} onPress={() => Tab.Navigator('RegisterVehicles')}>
                     <Text style={styles.buttonText}>Voltar</Text>
                 </TouchableOpacity>
             </Animatable.View>

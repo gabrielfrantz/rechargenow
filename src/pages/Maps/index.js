@@ -13,6 +13,11 @@ export default function Maps() {
                     <View style={styles.buttonIconSeparator} />
                     <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonSecond} onPress={() => navigation.navigate('RegisterElectropost')} activeOpacity={0.5}>
+                    <Text style={styles.buttonText}>Cadastrar nova estação de recarga</Text>
+                    <View style={styles.buttonIconSeparator} />
+                    <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
+                </TouchableOpacity>
             </Animatable.View>
         </View>
     );
@@ -46,9 +51,20 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 500,
-      marginBottom: 20
+      marginTop: 430,
+      marginBottom: 10
     },
+    buttonSecond: {
+        backgroundColor: '#E0DCDC',
+        borderRadius: 5,
+        paddingVertical: 10,
+        flexDirection: 'row',
+        width: '100%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10
+      },
     buttonText: {
         fontSize: 20,
         color: '#000000'

@@ -24,7 +24,7 @@ export default function Travel() {
         <TextInput
           style={styles.input}
         />
-        <TouchableOpacity style={styles.button} onPress={() => Tab.Navigator('RegisterVehicles')}>
+        <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Traçar Rota</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonSecond} onPress={() => Tab.Navigator('Maps')}>

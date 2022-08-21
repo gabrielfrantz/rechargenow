@@ -42,7 +42,7 @@ export default function Menu() {
                 >
                     <Tab.Screen
                         name="Mapa"
-                        component={RegisterElectropost}
+                        component={Maps}
                         options={{
                             tabBarIcon: () => (
                                 <Image source={require('../../assets/menuMapa.png')} />
@@ -52,7 +52,7 @@ export default function Menu() {
                     />
                     <Tab.Screen
                         name="Veículos"
-                        component={RegisterVehiclesData}
+                        component={Vehicles}
                         options={{
                             tabBarIcon: () => (
                                 <Image source={require('../../assets/menuVeiculos.png')} />

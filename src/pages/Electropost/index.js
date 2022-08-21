@@ -26,7 +26,7 @@ export default function Electropost() {
                 <Text style={styles.text}>
                     <Image style={styles.buttonImagemIconStyle} source={require('../../assets/telefone.png')} />
                     Contato:</Text>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Menu')} activeOpacity={0.5}>
+                <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Traçar Rota</Text>
                 </TouchableOpacity>
             </Animatable.View>
