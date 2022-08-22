@@ -5,7 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function RegisterVehiclesData() {
+export default function RegisterVehiclesData({ change, changeData }) {
     return (
         <View style={styles.container}>
             <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
@@ -32,9 +32,9 @@ export default function RegisterVehiclesData() {
                 <Text style={styles.text}>(*) Preenchimento obrigatório</Text>
 
                 <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText} onPress={() => Tab.Navigator('Maps')}>Salvar </Text>
+                    <Text style={styles.buttonText} onPress={change}>Salvar </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle} onPress={() => Tab.Navigator('RegisterVehicles')}>
+                <TouchableOpacity style={styles.buttonGoogle} onPress={changeData}>
                     <Text style={styles.buttonText}>Voltar</Text>
                 </TouchableOpacity>
             </Animatable.View>

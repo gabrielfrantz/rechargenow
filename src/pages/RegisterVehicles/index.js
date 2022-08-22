@@ -1,13 +1,22 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import RegisterVehiclesData from '../../pages/RegisterVehiclesData'
 
-const Tab = createMaterialTopTabNavigator();
+export default function RegisterVehicles({ change }) {
 
-export default function RegisterVehicles() {
+    const [register, setRegister] = useState(false);
+
+    const changeData = () => {
+        setRegister(false);
+    }
+
     return (
         <View style={styles.container}>
+            {register ? (
+            <RegisterVehiclesData change={change} changeData={changeData}/>
+            ) : (
             <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
                 <Text style={styles.title}>Selecione o tipo do seu veículo!</Text>
 
@@ -24,13 +33,14 @@ export default function RegisterVehicles() {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button} onPress={() => Tab.Navigator('RegisterVehiclesData')}>
+                <TouchableOpacity style={styles.button} onPress={() => setRegister(true) }>
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSecond} onPress={() => Tab.Navigator('Maps')}>
+                <TouchableOpacity style={styles.buttonSecond} onPress={change}>
                     <Text style={styles.buttonText}>Cancelar</Text>
                 </TouchableOpacity>
             </Animatable.View>
+            )}
         </View>
     );
 }
