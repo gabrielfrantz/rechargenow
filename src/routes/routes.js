@@ -5,6 +5,7 @@ import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Menu from '../pages/Menu'
+import RegisterElectropost from '../pages/RegisterElectropost'
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,10 @@ export default function Routes() {
             <Stack.Screen
                 name="Menu"
                 component={Menu}
+            />
+            <Stack.Screen
+                name="RegisterElectropost"
+                component={RegisterElectropost}
             />
         </Stack.Navigator>
     )

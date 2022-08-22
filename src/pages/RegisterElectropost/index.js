@@ -5,7 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function RegisterElectropost() {
+export default function RegisterElectropost({ change }) {
     return (
         <View style={styles.container}>
             <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
@@ -46,10 +46,10 @@ export default function RegisterElectropost() {
                     style={styles.input}
                 />
                 <Text style={styles.text}>(*) Preenchimento obrigatório</Text>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={change}>
                     <Text style={styles.buttonText}>Salvar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle}>
+                <TouchableOpacity style={styles.buttonGoogle} onPress={change}>
                     <Text style={styles.buttonText}>Voltar</Text>
                 </TouchableOpacity>
             </Animatable.View>
@@ -118,6 +118,18 @@ const styles = StyleSheet.create({
     inputMenor: {
         height: 30,
         width: 50,
+        marginBottom: 12,
+        backgroundColor: '#FFFFFF',
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderRadius: 5,
+        marginTop: 1
+    },
+    inputMenor2: {
+        height: 30,
+        width: 30,
         marginBottom: 12,
         backgroundColor: '#FFFFFF',
         borderTopWidth: 1,

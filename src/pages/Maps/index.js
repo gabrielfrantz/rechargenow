@@ -1,25 +1,36 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native';
+import RegisterElectropost from '../../pages/RegisterElectropost'
 
 export default function Maps() {
     const navigation = useNavigation();
+    const [register, setRegister] = useState(false);
+
+    const change = () => {
+        setRegister(false);
+    }
+
     return (
         <View style={styles.container}>
-            <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Electropost')} activeOpacity={0.5}>
-                    <Text style={styles.buttonText}>Localizar estações mais próximas</Text>
-                    <View style={styles.buttonIconSeparator} />
-                    <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSecond} onPress={() => navigation.navigate('RegisterElectropost')} activeOpacity={0.5}>
-                    <Text style={styles.buttonText}>Cadastrar nova estação de recarga</Text>
-                    <View style={styles.buttonIconSeparator} />
-                    <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
-                </TouchableOpacity>
-            </Animatable.View>
-        </View>
+            {register ? (
+            <RegisterElectropost change={change}/>
+            ) : (
+                <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
+                     <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Electropost')} activeOpacity={0.5}>
+                        <Text style={styles.buttonText}>Localizar estações mais próximas</Text>
+                        <View style={styles.buttonIconSeparator} />
+                        <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonSecond} onPress={() => setRegister(true) } activeOpacity={0.5}>
+                        <Text style={styles.buttonText}>Cadastrar nova estação de recarga</Text>
+                        <View style={styles.buttonIconSeparator} />
+                        <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
+                    </TouchableOpacity>
+                </Animatable.View>
+            )}
+            </View>
     );
 }
 
