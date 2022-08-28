@@ -27,7 +27,7 @@ export default function Travel() {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Traçar Rota</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSecond} onPress={() => Tab.Navigator('Maps')}>
+        <TouchableOpacity style={styles.buttonSecond}>
           <Text style={styles.buttonText}>Cancelar</Text>
         </TouchableOpacity>
       </Animatable.View>

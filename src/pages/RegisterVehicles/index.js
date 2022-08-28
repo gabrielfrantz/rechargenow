@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
+import React, { useState } from 'react'
+import { collection, addDoc } from 'firebase/firestore'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import RegisterVehiclesData from '../../pages/RegisterVehiclesData'
+import { auth, db } from '../../config/firebase'
+import Vehicles from '../../pages/Vehicles'
 
 export default function RegisterVehicles({ change }) {
 
@@ -12,35 +14,100 @@ export default function RegisterVehicles({ change }) {
         setRegister(false);
     }
 
+    const [marca, setMarca] = useState('')
+    const [modelo, setModelo] = useState('')
+    const [plugues, setPlugues] = useState('')
+    const [placa, setPlaca] = useState('')
+    const [bateria, setBateria] = useState('')
+
+    var tipoVeiculo
+
+    function newVehicle() {
+        console.log(marca)
+        console.log(modelo)
+        console.log(plugues)
+        console.log(placa)
+        console.log(bateria)
+        console.log(tipoVeiculo)
+        console.log("Veículo cadastrado com sucesso! ")
+        const docRef = addDoc(collection(db, "vehicles"), {
+            marca: marca,
+            modelo: modelo,
+            plugues: plugues,
+            placa: placa,
+            bateria: bateria,
+            veiculo: tipoVeiculo
+
+        })
+    }
+
     return (
         <View style={styles.container}>
-            {register ? (
-            <RegisterVehiclesData change={change} changeData={changeData}/>
-            ) : (
             <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-                <Text style={styles.title}>Selecione o tipo do seu veículo!</Text>
+                <ScrollView>
+                    <Text style={styles.title}>Selecione o tipo do seu veículo!</Text>
+                    <TouchableOpacity style={styles.buttonCarro} onPress={() => tipoVeiculo = 'Híbrido'}>
+                        <Image style={styles.buttonImagemIconStyle} source={require('../../assets/carroHibrido.png')} />
+                        <View style={{ position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={styles.textCar}>Híbrido</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonCarroSecond} onPress={() => tipoVeiculo = 'Elétrico'}>
+                        <Image style={styles.buttonImagemIconStyle} source={require('../../assets/carroEletrico.png')} />
+                        <View style={{ position: 'absolute', top: 115, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={styles.textCar}>Elétrico</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.subText}>Marca do veículo (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={marca}
+                        onChangeText={value => setMarca(value)}
+                    />
+                    <Text style={styles.subText}>Modelo do veículo (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={modelo}
+                        onChangeText={value => setModelo(value)}
+                    />
+                    <Text style={styles.subText}>Tipos de plugues (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={plugues}
+                        onChangeText={value => setPlugues(value)}
+                    />
+                    <Text style={styles.subText}>Placa</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={placa}
+                        onChangeText={value => setPlaca(value)}
+                    />
+                    <Text style={styles.subText}>Capacidade da bateria (kWh)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={bateria}
+                        onChangeText={value => setBateria(value)}
+                    />
+                    <Text style={styles.text}>(*) Preenchimento obrigatório</Text>
 
-                <TouchableOpacity style={styles.buttonCarro}>
-                    <Image style={styles.buttonImagemIconStyle} source={require('../../assets/carroHibrido.png')} />
-                    <View style={{ position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.textCar}>Híbrido</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonCarro}>
-                    <Image style={styles.buttonImagemIconStyle} source={require('../../assets/carroEletrico.png')} />
-                    <View style={{ position: 'absolute', top: 115, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.textCar}>Elétrico</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={() => setRegister(true) }>
-                    <Text style={styles.buttonText}>Avançar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSecond} onPress={change}>
-                    <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText} onPress={() => newVehicle()}>Salvar </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonSecond} onPress={change}>
+                        <Text style={styles.buttonText}>Cancelar</Text>
+                    </TouchableOpacity>
+                </ScrollView>
             </Animatable.View>
-            )}
         </View>
     );
 }
@@ -64,11 +131,15 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         textAlign: 'center'
     },
+    subText: {
+        color: '#515151',
+        textAlign: 'left',
+        fontSize: 16
+    },
     text: {
         color: '#515151',
         textAlign: 'center',
-        fontSize: 20,
-        marginTop: 10
+        fontSize: 16
     },
     textCar: {
         color: '#000000',
@@ -85,7 +156,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 40
+        marginTop: 15
     },
     buttonSecond: {
         backgroundColor: '#E0DCDC',
@@ -96,7 +167,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 10,
+        marginBottom: 20
     },
     buttonCarro: {
         backgroundColor: '#E0DCDC',
@@ -109,6 +181,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10
     },
+    buttonCarroSecond: {
+        backgroundColor: '#E0DCDC',
+        borderRadius: 25,
+        paddingVertical: 30,
+        flexDirection: 'row',
+        width: '90%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 20
+
+    },
     buttonText: {
         fontSize: 20,
         color: '#000000'
@@ -119,5 +204,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    input: {
+        height: 50,
+        marginBottom: 12,
+        backgroundColor: '#FFFFFF',
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderRadius: 5,
+        marginTop: 2,
     }
 })

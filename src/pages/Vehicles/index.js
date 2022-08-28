@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import RegisterVehicles from '../../pages/RegisterVehicles'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 export default function Vehicles() {
 
@@ -11,6 +11,8 @@ export default function Vehicles() {
   const change = () => {
       setRegister(false);
   }
+
+  const Tab = createMaterialTopTabNavigator();
 
   return (
     <View style={styles.container}>
@@ -21,9 +23,6 @@ export default function Vehicles() {
         <Text style={styles.text}>Nenhum veículo cadastrado!</Text>
         <TouchableOpacity style={styles.button} onPress={() => setRegister(true) }>
           <Text style={styles.buttonText}>Adicionar novo veículo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSecond} onPress={() => Tab.Navigator('Maps')}>
-          <Text style={styles.buttonText}>Voltar</Text>
         </TouchableOpacity>
       </Animatable.View>
       )}
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 400
+    marginTop: 450
   },
   buttonSecond: {
     backgroundColor: '#E0DCDC',

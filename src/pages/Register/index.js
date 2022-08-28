@@ -3,11 +3,9 @@ import { useState } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from 'firebase/auth'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../../config/firebase'
 import { doc, setDoc } from 'firebase/firestore'
-import * as Expo from 'expo-google-sign-in'
-import * as Google from 'expo-auth-session'
 
 
 export default function Register() {
@@ -28,30 +26,12 @@ export default function Register() {
                     setDoc(doc(db, "user", user.uid), {
                         nome: nome,
                         email: email,
-                        password: password
+                        password: password,
+
                     })
                         .catch(error => console.log(error.message))
                 }
-            })
-    }
-
-    async function handleSignInGoogle() {
-        const config = {
-            androidClientId: '153121752067-mbj0ja30r9lna6o73tai9vdojsmrdo6k.apps.googleusercontent.com',
-            scopes: ['profile', 'email']
-        };
-
-        Google
-            .loadAsync(config)
-            .then((result) => {
-                const { type, user } = result
-
-                if (type === 'sucess') {
-                    const { email, name } = user
-                }
-            })
-            .catch(error => {
-                console.log(error)
+                navigation.navigate('Menu')
             })
     }
 
@@ -95,10 +75,8 @@ export default function Register() {
                 <TouchableOpacity style={styles.button} onPress={() => handleSignIn()}>
                     <Text style={styles.buttonText}>Registrar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle} onPress={() => handleSignInGoogle()}>
-                    <Text style={styles.buttonText}>Registrar com Google  </Text>
-                    <View style={styles.buttonIconSeparator} />
-                    <Image style={styles.buttonImagemIconStyle} source={require('../../assets/google.png')} />
+                <TouchableOpacity style={styles.buttonSecond} onPress={() => navigation.navigate('Home')}>
+                    <Text style={styles.buttonText}>Voltar</Text>
                 </TouchableOpacity>
             </Animatable.View>
         </View>
@@ -159,31 +137,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 40
     },
-    buttonGoogle: {
+    buttonSecond: {
         backgroundColor: '#E0DCDC',
         borderRadius: 5,
         paddingVertical: 10,
-        flexDirection: 'row',
         width: '90%',
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20
+        marginTop: 20
     },
     buttonText: {
         fontSize: 20,
         color: '#000000'
-    },
-    buttonIconSeparator: {
-        backgroundColor: '#000000'
-    },
-    buttonImagemIconStyle: {
-        padding: 10,
-        margin: 5,
-        height: 25,
-        width: 25,
-        resizeMode: 'stretch'
     },
     input: {
         height: 50,
@@ -194,7 +160,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
         borderBottomWidth: 1,
         borderRadius: 5,
-        marginTop: 10,
+        marginTop: 20,
     },
     erro: {
         alignSelf: 'flex-start',

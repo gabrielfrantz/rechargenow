@@ -51,16 +51,17 @@ export default function Login() {
                     onChangeText={value => setPassword(value)}
                     secureTextEntry={true}
                 />
-                <Text style={styles.text}>Esqueceu sua senha? <Text style={styles.textBold}>Redefina aqui!</Text></Text>
+                <Text style={styles.text}>Esqueceu sua senha?</Text>
+                <TouchableOpacity style={styles.buttonSecond}>
+                    <Text style={styles.textBold}>Redefina aqui!</Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Menu')}>
                     <Text style={styles.buttonText}>Autenticar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle} onPress={() => handleSignInGoogle()}>
-                    <Text style={styles.buttonText}>Autenticar com Google    </Text>
-                    <View style={styles.buttonIconSeparator} />
-                    <Image style={styles.buttonImagemIconStyle} source={require('../../assets/google.png')} />
+                <Text style={styles.text}>Ainda não possui cadastro?</Text>
+                <TouchableOpacity style={styles.buttonSecond} onPress={() => navigation.navigate('Register')}>
+                    <Text style={styles.textBold}>Registre-se aqui!</Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Ainda não possui cadastro? <Text style={styles.textBold}>Registre-se aqui!</Text></Text>
             </Animatable.View>
         </View>
     );
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginTop: 28,
+        marginTop: 40,
         marginBottom: 56,
         textAlign: 'center'
     },
@@ -102,7 +103,8 @@ const styles = StyleSheet.create({
     subText: {
         color: '#515151',
         textAlign: 'left',
-        fontSize: 16
+        fontSize: 16,
+        marginTop: 10
     },
     textBold: {
         color: '#000000',
@@ -118,37 +120,22 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 40
+        marginTop: 60
     },
-    buttonGoogle: {
-        backgroundColor: '#E0DCDC',
+    buttonSecond: {
         borderRadius: 5,
         paddingVertical: 10,
-        flexDirection: 'row',
         width: '90%',
         alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20
+        alignItems: 'center'
     },
     buttonText: {
         fontSize: 20,
         color: '#000000'
     },
-    buttonIconSeparator: {
-        backgroundColor: '#000000'
-    },
-    buttonImagemIconStyle: {
-        padding: 10,
-        margin: 5,
-        height: 25,
-        width: 25,
-        resizeMode: 'stretch'
-    },
     input: {
         height: 50,
-        marginBottom: 12,
         backgroundColor: '#FFFFFF',
         borderTopWidth: 1,
         borderLeftWidth: 1,
