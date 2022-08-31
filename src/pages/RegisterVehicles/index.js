@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import { collection, addDoc } from 'firebase/firestore'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { auth, db } from '../../config/firebase'
-import Vehicles from '../../pages/Vehicles'
 
 export default function RegisterVehicles({ change }) {
 

@@ -1,57 +1,138 @@
-import React from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
+import React, { useState } from 'react'
+import { collection, addDoc } from 'firebase/firestore'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-
-const Tab = createMaterialTopTabNavigator();
+import { auth, db } from '../../config/firebase'
+import Electropost from '../../pages/Electropost'
 
 export default function RegisterElectropost({ change }) {
+
+    const [register, setRegister] = useState(false);
+
+    const changeData = () => {
+        setRegister(false);
+    }
+
+    const [local, setLocal] = useState('')
+    const [endereco, setEndereco] = useState('')
+    const [numero, setNumero] = useState('')
+    const [bairro, setBairro] = useState('')
+    const [cidade, setCidade] = useState('')
+    const [uf, setUF] = useState('')
+    const [tipo_plugues, setTipo_plugues] = useState('')
+    const [potencia, setPotencia] = useState('')
+    const [contato, setContato] = useState('')
+
+    var tipoVeiculo
+
+    function newVehicle() {
+        console.log(local)
+        console.log(endereco)
+        console.log(numero)
+        console.log(bairro)
+        console.log(cidade)
+        console.log(uf)
+        console.log(tipo_plugues)
+        console.log(potencia)
+        console.log(contato)
+        console.log("Estação de recarga cadastrada com sucesso! ")
+        const docRef = addDoc(collection(db, "electropost"), {
+            local: local,
+            endereco: endereco,
+            endereco: numero,
+            endereco: bairro,
+            endereco: cidade,
+            endereco: uf,
+            tipo_plugues: tipo_plugues,
+            potencia: potencia,
+            contato: contato
+        })
+    }
+
     return (
         <View style={styles.container}>
             <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-                <Text style={styles.subText}>Nome do local (*)</Text>
-                <TextInput
-                    style={styles.input}
-                />
-                <Text style={styles.subText}>Endereço (*)</Text>
-                <TextInput
-                    style={styles.input}
-                />
-                <Text style={styles.subText}>Número (*)</Text>
-                <TextInput
-                    style={styles.inputMenor}
-                />
-                <Text style={styles.subText}>Bairro (*)</Text>
-                <TextInput
-                    style={styles.input}
-                />
-                <Text style={styles.subText}>Cidade (*)</Text>
-                <TextInput
-                    style={styles.input}
-                />
-                <Text style={styles.subText}>UF (*)</Text>
-                <TextInput
-                    style={styles.inputMenor}
-                />
-                <Text style={styles.subText}>Tipos de Plugues</Text>
-                <TextInput
-                    style={styles.input}
-                />
-                <Text style={styles.subText}>Potência</Text>
-                <TextInput
-                    style={styles.input}
-                />
-                <Text style={styles.subText}>Contato</Text>
-                <TextInput
-                    style={styles.input}
-                />
-                <Text style={styles.text}>(*) Preenchimento obrigatório</Text>
-                <TouchableOpacity style={styles.button} onPress={change}>
-                    <Text style={styles.buttonText}>Salvar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogle} onPress={change}>
-                    <Text style={styles.buttonText}>Voltar</Text>
-                </TouchableOpacity>
+                <ScrollView>
+                    <Text style={styles.subText}>Nome do local (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={local}
+                        onChangeText={value => setLocal(value)}
+                    />
+                    <Text style={styles.subText}>Endereço (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={endereco}
+                        onChangeText={value => setEndereco(value)}
+                    />
+                    <Text style={styles.subText}>Número (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={numero}
+                        onChangeText={value => setNumero(value)}
+                    />
+                    <Text style={styles.subText}>Bairro (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={bairro}
+                        onChangeText={value => setBairro(value)}
+                    />
+                    <Text style={styles.subText}>Cidade (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={cidade}
+                        onChangeText={value => setCidade(value)}
+                    />
+                    <Text style={styles.subText}>UF (*)</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={uf}
+                        onChangeText={value => setUF(value)}
+                    />
+                    <Text style={styles.subText}>Tipos de Plugues</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={tipo_plugues}
+                        onChangeText={value => setTipo_plugues(value)}
+                    />
+                    <Text style={styles.subText}>Potência</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={potencia}
+                        onChangeText={value => setPotencia(value)}
+                    />
+                    <Text style={styles.subText}>Contato</Text>
+                    <TextInput
+                        style={
+                            styles.input
+                        }
+                        value={contato}
+                        onChangeText={value => setContato(value)}
+                    />
+                    <Text style={styles.text}>(*) Preenchimento obrigatório</Text>
+                    <TouchableOpacity style={styles.button} onPress={change}>
+                        <Text style={styles.buttonText}>Salvar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonGoogle} onPress={change}>
+                        <Text style={styles.buttonText}>Voltar</Text>
+                    </TouchableOpacity>
+                </ScrollView>
             </Animatable.View>
         </View>
     );

@@ -69,6 +69,16 @@ export default function Menu() {
                             headerLeft: null
                         }}
                     />
+                    <Tab.Screen
+                        name="Perfil"
+                        component={User}
+                        options={{
+                            tabBarIcon: () => (
+                                <Image source={require('../../assets/menuPerfil.png')} />
+                            ),
+                            headerLeft: null
+                        }}
+                    />
                 </Tab.Navigator>
             </Animatable.View>
         </View>
