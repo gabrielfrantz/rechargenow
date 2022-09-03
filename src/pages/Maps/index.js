@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
+import React, { useState } from 'react'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image,} from 'react-native'
+import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native';
 import RegisterElectropost from '../../pages/RegisterElectropost'
+import Electropost from '../../pages/Electropost'
 
 export default function Maps() {
     const navigation = useNavigation();
@@ -12,25 +14,39 @@ export default function Maps() {
         setRegister(false);
     }
 
+    const listarEletropostos = () => {
+        <Card>
+        <Card.Title title="Frantz House" subtitle="Frantz House 2" />
+        <Card.Content>
+          <Title>Frantz House 3</Title>
+          <Paragraph>Rua Brígida Fagundes, nº. 81, Bairro Morsch, RS, 95800-000</Paragraph>
+        </Card.Content>
+        <Card.Actions>
+          <Button>Ok</Button>
+        </Card.Actions>
+      </Card>
+    };
+
+
     return (
         <View style={styles.container}>
             {register ? (
-            <RegisterElectropost change={change}/>
+                <RegisterElectropost change={change} />
             ) : (
                 <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-                     <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Electropost')} activeOpacity={0.5}>
+                    <TouchableOpacity style={styles.button} onClick={() => listarEletropostos()}>
                         <Text style={styles.buttonText}>Localizar estações mais próximas</Text>
                         <View style={styles.buttonIconSeparator} />
                         <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSecond} onPress={() => setRegister(true) } activeOpacity={0.5}>
+                    <TouchableOpacity style={styles.buttonSecond} onPress={() => setRegister(true)}>
                         <Text style={styles.buttonText}>Cadastrar nova estação de recarga</Text>
                         <View style={styles.buttonIconSeparator} />
                         <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
                     </TouchableOpacity>
                 </Animatable.View>
             )}
-            </View>
+        </View>
     );
 }
 
@@ -54,16 +70,16 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     button: {
-      backgroundColor: '#E0DCDC',
-      borderRadius: 5,
-      paddingVertical: 10,
-      flexDirection: 'row',
-      width: '100%',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 430,
-      marginBottom: 10
+        backgroundColor: '#E0DCDC',
+        borderRadius: 5,
+        paddingVertical: 10,
+        flexDirection: 'row',
+        width: '100%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 430,
+        marginBottom: 10
     },
     buttonSecond: {
         backgroundColor: '#E0DCDC',
@@ -75,7 +91,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 10
-      },
+    },
     buttonText: {
         fontSize: 20,
         color: '#000000'

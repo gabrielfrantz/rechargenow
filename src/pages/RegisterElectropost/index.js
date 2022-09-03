@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { collection, addDoc } from 'firebase/firestore'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { auth, db } from '../../config/firebase'
+import { db } from '../../config/firebase'
 import Electropost from '../../pages/Electropost'
 
 export default function RegisterElectropost({ change }) {
@@ -126,7 +126,7 @@ export default function RegisterElectropost({ change }) {
                         onChangeText={value => setContato(value)}
                     />
                     <Text style={styles.text}>(*) Preenchimento obrigatório</Text>
-                    <TouchableOpacity style={styles.button} onPress={change}>
+                    <TouchableOpacity style={styles.button} onPress={() => newVehicle()}>
                         <Text style={styles.buttonText}>Salvar</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonGoogle} onPress={change}>

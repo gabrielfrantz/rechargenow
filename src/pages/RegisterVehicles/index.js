@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { collection, addDoc } from 'firebase/firestore'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
+import { SafeAreaView, Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, Alert } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { auth, db } from '../../config/firebase'
+
 
 export default function RegisterVehicles({ change }) {
 
@@ -74,11 +75,7 @@ export default function RegisterVehicles({ change }) {
                     />
                     <Text style={styles.subText}>Tipos de plugues (*)</Text>
                     <TextInput
-                        style={
-                            styles.input
-                        }
-                        value={plugues}
-                        onChangeText={value => setPlugues(value)}
+                        onPress={() => checkPlug()}
                     />
                     <Text style={styles.subText}>Placa</Text>
                     <TextInput

@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import RegisterVehicles from '../../pages/RegisterVehicles'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 export default function Vehicles() {
 
@@ -11,8 +10,6 @@ export default function Vehicles() {
   const change = () => {
       setRegister(false);
   }
-
-  const Tab = createMaterialTopTabNavigator();
 
   return (
     <View style={styles.container}>
