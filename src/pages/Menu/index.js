@@ -40,7 +40,7 @@ export default function Menu() {
                     }}
                 >
                     <Tab.Screen
-                        name="Estações"
+                        name="  Estações"
                         component={Maps}
                         options={{
                             tabBarIcon: () => (
@@ -60,7 +60,7 @@ export default function Menu() {
                         }}
                     />
                     <Tab.Screen
-                        name="VIAGENS"
+                        name="   Viagens"
                         component={Travel}
                         options={{
                             tabBarIcon: () => (
@@ -70,7 +70,7 @@ export default function Menu() {
                         }}
                     />
                     <Tab.Screen
-                        name="Perfil"
+                        name=" Perfil"
                         component={User}
                         options={{
                             tabBarIcon: () => (
