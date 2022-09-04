@@ -102,14 +102,12 @@ export default function RegisterElectropost({ change }) {
                         onChangeText={value => setUF(value)}
                     />
                     <Text style={styles.subText}>Tipos de Plugues</Text>
-                    <TextInput
-                        style={
-                            styles.input
-                        }
-                        value={tipo_plugues}
-                        onChangeText={value => setTipo_plugues(value)}
-                    />
-                    <Text style={styles.subText}>Potência</Text>
+                    <TouchableOpacity style={styles.buttonSecond} >
+                        <Text style={styles.buttonText}>Adicionar plugues</Text>
+                        <View style={styles.buttonIconSeparator} />
+                        <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
+                    </TouchableOpacity>
+                    <Text style={styles.subText}>Potência (kW)</Text>
                     <TextInput
                         style={
                             styles.input
@@ -170,6 +168,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10
     },
+    buttonSecond: {
+        backgroundColor: '#E0DCDC',
+        borderRadius: 10,
+        paddingVertical: 10,
+        flexDirection: 'row',
+        width: '50%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2
+    },
     buttonGoogle: {
         backgroundColor: '#E0DCDC',
         borderRadius: 5,
@@ -219,5 +228,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderRadius: 5,
         marginTop: 1
+    },
+    buttonIconSeparator: {
+        backgroundColor: '#000000'
+    },
+    buttonImagemIconStyle: {
+        padding: 10,
+        margin: 5,
+        height: 20,
+        width: 20,
+        resizeMode: 'stretch'
     }
 })

@@ -7,8 +7,8 @@ import { signInWithEmailAndPassword, getAuth, signInWithGoogleAsync } from 'fire
 
 export default function Login() {
     const navigation = useNavigation();
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('gabifrantz@gmail.com')
+    const [password, setPassword] = useState('gabriel123')
 
     async function handleSignIn() {
         const auth = getAuth()
@@ -18,6 +18,7 @@ export default function Login() {
                 console.log(email)
                 console.log(password)
                 console.log("Login efetuado com sucesso! ")
+                navigation.navigate('Menu')
             })
             .catch(error => console.log(error.message))
     }
@@ -55,7 +56,7 @@ export default function Login() {
                 <TouchableOpacity style={styles.buttonSecond}>
                     <Text style={styles.textBold}>Redefina aqui!</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Menu')}>
+                <TouchableOpacity style={styles.button} onPress={() => handleSignIn()}>
                     <Text style={styles.buttonText}>Autenticar</Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Ainda não possui cadastro?</Text>

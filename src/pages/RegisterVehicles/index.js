@@ -73,10 +73,12 @@ export default function RegisterVehicles({ change }) {
                         value={modelo}
                         onChangeText={value => setModelo(value)}
                     />
-                    <Text style={styles.subText}>Tipos de plugues (*)</Text>
-                    <TextInput
-                        onPress={() => checkPlug()}
-                    />
+                    <Text style={styles.subText}>Tipos de Plugues</Text>
+                    <TouchableOpacity style={styles.buttonPlugues} >
+                        <Text style={styles.buttonTextPlugues}>Adicionar plugues</Text>
+                        <View style={styles.buttonIconSeparator} />
+                        <Image style={styles.buttonImagemIconStyle2} source={require('../../assets/add.png')} />
+                    </TouchableOpacity>
                     <Text style={styles.subText}>Placa</Text>
                     <TextInput
                         style={
@@ -165,6 +167,17 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 20
     },
+    buttonPlugues: {
+        backgroundColor: '#E0DCDC',
+        borderRadius: 10,
+        paddingVertical: 10,
+        flexDirection: 'row',
+        width: '50%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2
+    },
     buttonCarro: {
         backgroundColor: '#E0DCDC',
         borderRadius: 25,
@@ -193,12 +206,23 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#000000'
     },
+    buttonTextPlugues: {
+        fontSize: 14,
+        color: '#000000'
+    },
     buttonImagemIconStyle: {
         height: 100,
         width: 100,
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    buttonImagemIconStyle2: {
+        padding: 10,
+        margin: 5,
+        height: 20,
+        width: 20,
+        resizeMode: 'stretch'
     },
     input: {
         height: 50,

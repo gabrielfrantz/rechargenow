@@ -40,11 +40,11 @@ export default function Menu() {
                     }}
                 >
                     <Tab.Screen
-                        name="Mapa"
+                        name="Estações"
                         component={Maps}
                         options={{
                             tabBarIcon: () => (
-                                <Image source={require('../../assets/menuMapa.png')} />
+                                <Image source={require('../../assets/menuEstacoes.png')} />
                             ),
                             headerLeft: null
                         }}
@@ -60,11 +60,11 @@ export default function Menu() {
                         }}
                     />
                     <Tab.Screen
-                        name="Rotas"
+                        name="VIAGENS"
                         component={Travel}
                         options={{
                             tabBarIcon: () => (
-                                <Image source={require('../../assets/menuRotas.png')} />
+                                <Image source={require('../../assets/menuViagens.png')} />
                             ),
                             headerLeft: null
                         }}
