@@ -144,6 +144,8 @@ const styles = StyleSheet.create({
     containerForm: {
         flex: 1,
         backgroundColor: '#FFFFFF',
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
         paddingStart: '5%',
         paddingTop: '3%',
         paddingEnd: '5%'

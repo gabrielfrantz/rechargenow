@@ -117,10 +117,23 @@ const styles = StyleSheet.create({
     containerForm: {
         flex: 5,
         backgroundColor: '#FFFFFF',
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
         paddingStart: '5%',
         paddingTop: '10%',
         paddingEnd: '5%',
         height: '60%'
+    },
+    containerModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modal: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#000000',
+        padding: 100,
     },
     title: {
         fontSize: 24,
