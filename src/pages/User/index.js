@@ -1,11 +1,11 @@
 import { React } from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../../config/firebase'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 export default function User() {
 
@@ -14,26 +14,45 @@ export default function User() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  async function alterar() {
-    await createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-            if (userCredential && userCredential.user) {
-                const user = userCredential.user
-                console.log(nome)
-                console.log(email)
-                console.log(password)
-                console.log("Usuário alteado com sucesso! " + user.uid)
-                setDoc(doc(db, "user", user.uid), {
-                    nome: nome,
-                    email: email,
-                    password: password,
+  const [usuario, setUsuario] = useState({
+    nome: "",
+    email: "",
+    password: "",
+  })
 
-                })
-                    .catch(error => console.log(error.message))
-            }
-            navigation.navigate('Menu')
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  async function alterar() {
+    const docSnap = await getDoc(doc(db, "user", user.uid));
+    if (user.id = docSnap.id) {
+      console.log("Nome:", docSnap.data().nome);
+      console.log("Email:", docSnap.data().email);
+    }
+  }
+
+  const [userTeste, setUserTeste] = useState('')
+  const [nomeEdit, setNomeEdit] = useState('')
+  const [emailEdit, setEmailEdit] = useState('')
+  const [passwordEdit, setPasswordEdit] = useState('')
+  useEffect(() => {
+    console.log("Entrou Effect")
+    const teste = collection(db, "user")
+    const list = []
+    const querySnapshot = getDocs(teste)
+      .then
+      (querySnapshot => {
+        querySnapshot.forEach((doc) => {
+          if (user.id == doc.id) {
+            console.log("Uid", doc.id);
+            console.log("Nome", doc.data().nome);
+            console.log("Email", doc.data().email);
+            list.push({ ...doc.data(), id: doc.id })
+          }
         })
-}
+      })
+    setUserTeste(list)
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -44,7 +63,7 @@ export default function User() {
           style={
             styles.input
           }
-          value={nome}
+          value={nome == null ? '' : nome}
           onChangeText={value => setNome(value)}
         />
         <Text style={styles.subText}>E-mail</Text>
@@ -52,14 +71,14 @@ export default function User() {
           style={
             styles.input
           }
-          value={email}
+          value={email == null ? '' : email}
           onChangeText={value => setEmail(value)}
         />
         <Text style={styles.subText}>Senha</Text>
         <TextInput
           style={
             styles.input}
-          value={password}
+          value={password == null ? '' : password}
           onChangeText={value => setPassword(value)}
           secureTextEntry={true}
         />
@@ -67,7 +86,7 @@ export default function User() {
         <TextInput
           style={
             styles.input}
-          value={password}
+          value={password == null ? '' : password}
           onChangeText={value => setPassword(value)}
           secureTextEntry={true}
         />
@@ -93,8 +112,6 @@ const styles = StyleSheet.create({
   containerForm: {
     flex: 5,
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
     paddingStart: '5%',
     paddingTop: '10%',
     paddingEnd: '5%'

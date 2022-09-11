@@ -29,13 +29,13 @@ export default function Menu() {
                     screenOptions={{
                         style: {
                             backgroundColor: '#FFFFFF',
-                            borderTopColor: 'transparent'
+                            borderTopColor: 'transparent',
                         },
                         activeTintColor: '#000000',
                         tabStyle: {
                             paddingBottom: 10,
                             paddingTop: 10,
-                            headerLeft: null
+                            headerLeft: null,
                         }
                     }}
                 >
@@ -46,17 +46,39 @@ export default function Menu() {
                             tabBarIcon: () => (
                                 <Image source={require('../../assets/menuEstacoes.png')} />
                             ),
-                            headerLeft: null
+                            headerLeft: null,
+                            tabBarLabelStyle: {
+                                fontSize: 9,
+                                fontWeight: "bold",
+                            }
                         }}
                     />
                     <Tab.Screen
-                        name="Veículos"
+                        name="  Veículos"
                         component={Vehicles}
                         options={{
                             tabBarIcon: () => (
                                 <Image source={require('../../assets/menuVeiculos.png')} />
                             ),
-                            headerLeft: null
+                            headerLeft: null,
+                            tabBarLabelStyle: {
+                                fontSize: 9,
+                                fontWeight: "bold",
+                            }
+                        }}
+                    />
+                    <Tab.Screen
+                        name=" Carregar"
+                        component={Travel}
+                        options={{
+                            tabBarIcon: () => (
+                                <Image source={require('../../assets/menuRecarregar.png')} />
+                            ),
+                            headerLeft: null,
+                            tabBarLabelStyle: {
+                                fontSize: 9,
+                                fontWeight: "bold",
+                            },
                         }}
                     />
                     <Tab.Screen
@@ -66,17 +88,25 @@ export default function Menu() {
                             tabBarIcon: () => (
                                 <Image source={require('../../assets/menuViagens.png')} />
                             ),
-                            headerLeft: null
+                            headerLeft: null,
+                            tabBarLabelStyle: {
+                                fontSize: 9,
+                                fontWeight: "bold",
+                            }
                         }}
                     />
                     <Tab.Screen
-                        name=" Perfil"
+                        name="   Perfil"
                         component={User}
                         options={{
                             tabBarIcon: () => (
                                 <Image source={require('../../assets/menuPerfil.png')} />
                             ),
-                            headerLeft: null
+                            headerLeft: null,
+                            tabBarLabelStyle: {
+                                fontSize: 9,
+                                fontWeight: "bold",
+                            }
                         }}
                     />
                 </Tab.Navigator>
@@ -100,4 +130,21 @@ const styles = StyleSheet.create({
         flex: 7,
         backgroundColor: '#FFFFFF',
     },
+    text: {
+        color: '#515151',
+        textAlign: 'center',
+        fontSize: 12,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconTabRound: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF',
+    }
 })

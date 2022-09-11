@@ -1,15 +1,17 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
 import { signInWithEmailAndPassword, getAuth, signInWithGoogleAsync } from 'firebase/auth';
+import { auth, db } from '../../config/firebase'
+import { doc, setDoc, getDoc, getDocs, collection } from 'firebase/firestore'
 
 export default function Login() {
     const navigation = useNavigation();
     const [email, setEmail] = useState('gabifrantz@gmail.com')
     const [password, setPassword] = useState('gabriel123')
-
+    
     async function handleSignIn() {
         const auth = getAuth()
         await signInWithEmailAndPassword(auth, email, password)
@@ -56,8 +58,8 @@ export default function Login() {
                 <TouchableOpacity style={styles.buttonSecond}>
                     <Text style={styles.textBold}>Redefina aqui!</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handleSignIn()}>
-                    <Text style={styles.buttonText}>Autenticar</Text>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText} onPress={() => handleSignIn()}>Autenticar</Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Ainda não possui cadastro?</Text>
                 <TouchableOpacity style={styles.buttonSecond} onPress={() => navigation.navigate('Register')}>

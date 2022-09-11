@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image,} from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, } from 'react-native'
+import MapView from 'react-native-maps'
 import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native';
@@ -14,27 +15,19 @@ export default function Maps() {
         setRegister(false);
     }
 
-    const listarEletropostos = () => {
-        <Card>
-        <Card.Title title="Frantz House" subtitle="Frantz House 2" />
-        <Card.Content>
-          <Title>Frantz House 3</Title>
-          <Paragraph>Rua Brígida Fagundes, nº. 81, Bairro Morsch, RS, 95800-000</Paragraph>
-        </Card.Content>
-        <Card.Actions>
-          <Button>Ok</Button>
-        </Card.Actions>
-      </Card>
-    };
-
-
     return (
         <View style={styles.container}>
             {register ? (
                 <RegisterElectropost change={change} />
+                //<Electropost change={change} />
             ) : (
                 <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-                    <TouchableOpacity style={styles.button} onClick={() => listarEletropostos()}>
+                    <MapView
+                        style={styles.map}
+                        provider={MapView.PROVIDER_GOOGLE}
+                    >
+                    </MapView>
+                    <TouchableOpacity style={styles.button}>
                         <Text style={styles.buttonText}>Localizar estações mais próximas</Text>
                         <View style={styles.buttonIconSeparator} />
                         <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
@@ -53,15 +46,20 @@ export default function Maps() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#000000'
+        backgroundColor: '#FFFFFF',
+    },
+    map: {
+        height: '79%',
+        width: '100%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     containerForm: {
         flex: 5,
         backgroundColor: '#FFFFFF',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
         paddingStart: '5%',
-        paddingTop: '10%',
+        paddingTop: '2%',
         paddingEnd: '5%',
         height: '60%'
     },
@@ -69,7 +67,10 @@ const styles = StyleSheet.create({
         color: '#515151',
         textAlign: 'center',
         fontSize: 16,
-        marginTop: 10
+        marginTop: 10,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     button: {
         backgroundColor: '#E0DCDC',
@@ -80,8 +81,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 430,
-        marginBottom: 10
+        marginTop: 5,
+        marginBottom: 5
     },
     buttonSecond: {
         backgroundColor: '#E0DCDC',
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 10
+        marginBottom: 5
     },
     buttonText: {
         fontSize: 20,

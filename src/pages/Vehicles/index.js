@@ -35,8 +35,6 @@ const styles = StyleSheet.create({
   containerForm: {
     flex: 5,
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
     paddingStart: '5%',
     paddingTop: '10%',
     paddingEnd: '5%',
