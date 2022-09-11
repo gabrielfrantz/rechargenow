@@ -4,10 +4,8 @@ import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'reac
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../config/firebase'
-import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where } from 'firebase/firestore'
+import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-
-import Menu from '../../pages/Menu'
 
 export default function User() {
 
@@ -30,17 +28,20 @@ export default function User() {
 
   async function alterar() {
     const docSnap = await getDoc(doc(db, "user", user.uid));
-    if (user.id = docSnap.id) {
-      console.log("Uid", docSnap.id);
-      console.log("Nome:", docSnap.data().nome);
-      console.log("Email:", docSnap.data().email);
-    }
+    updateDoc(docSnap.id, setEmailEdit, setNomeEdit, setPasswordEdit)
+    docSnap.data().nome = setNomeEdit
+    docSnap.data().email = setEmailEdit
+    //const docSnap = await getDoc(doc(db, "user", user.uid));
+    //if (user.id = docSnap.id) {
+     // console.log("Uid", docSnap.id);
+      //console.log("Nome:", docSnap.data().nome);
+      //console.log("Email:", docSnap.data().email);
+    //}
   }
 
   useEffect(() => {
     console.log("Entrou Effect")
     const teste = collection(db, "user")
-    const list = []
     const querySnapshot = getDocs(teste)
       .then
       (querySnapshot => {
@@ -48,12 +49,12 @@ export default function User() {
           if (user.id == doc.id) {
             console.log("Uid", doc.id);
             console.log("Nome", doc.data().nome);
+            setNome(doc.data().nome)
             console.log("Email", doc.data().email);
-            list.push({ ...doc.data(), id: doc.id })
+            setEmail(doc.data().email)
           }
         })
       })
-    setUserTeste(list)
   }, [])
 
   return (
@@ -65,7 +66,7 @@ export default function User() {
           style={
             styles.input
           }
-          value={nome == null ? '' : nome}
+          value={nome}
           onChangeText={value => setNomeEdit(value)}
         />
         <Text style={styles.subText}>E-mail</Text>
@@ -73,14 +74,14 @@ export default function User() {
           style={
             styles.input
           }
-          value={email == null ? '' : email}
+          value={email}
           onChangeText={value => setEmailEdit(value)}
         />
         <Text style={styles.subText}>Senha</Text>
         <TextInput
           style={
             styles.input}
-          value={password == null ? '' : password}
+          value={password}
           onChangeText={value => setPasswordEdit(value)}
           secureTextEntry={true}
         />
@@ -88,7 +89,7 @@ export default function User() {
         <TextInput
           style={
             styles.input}
-          value={password == null ? '' : password}
+          value={password}
           onChangeText={value => setPasswordEdit(value)}
           secureTextEntry={true}
         />
