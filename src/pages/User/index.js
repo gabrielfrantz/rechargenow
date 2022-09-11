@@ -7,34 +7,36 @@ import { auth, db } from '../../config/firebase'
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
+import Menu from '../../pages/Menu'
+
 export default function User() {
 
   const navigation = useNavigation();
+  const auth = getAuth();
+  const user = auth.currentUser;
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [userTeste, setUserTeste] = useState('')
+  const [nomeEdit, setNomeEdit] = useState('')
+  const [emailEdit, setEmailEdit] = useState('')
+  const [passwordEdit, setPasswordEdit] = useState('')
 
   const [usuario, setUsuario] = useState({
-    nome: "",
-    email: "",
-    password: "",
+    nome: '',
+    email: '',
+    password: '',
   })
-
-  const auth = getAuth();
-  const user = auth.currentUser;
 
   async function alterar() {
     const docSnap = await getDoc(doc(db, "user", user.uid));
     if (user.id = docSnap.id) {
+      console.log("Uid", docSnap.id);
       console.log("Nome:", docSnap.data().nome);
       console.log("Email:", docSnap.data().email);
     }
   }
 
-  const [userTeste, setUserTeste] = useState('')
-  const [nomeEdit, setNomeEdit] = useState('')
-  const [emailEdit, setEmailEdit] = useState('')
-  const [passwordEdit, setPasswordEdit] = useState('')
   useEffect(() => {
     console.log("Entrou Effect")
     const teste = collection(db, "user")
@@ -64,7 +66,7 @@ export default function User() {
             styles.input
           }
           value={nome == null ? '' : nome}
-          onChangeText={value => setNome(value)}
+          onChangeText={value => setNomeEdit(value)}
         />
         <Text style={styles.subText}>E-mail</Text>
         <TextInput
@@ -72,14 +74,14 @@ export default function User() {
             styles.input
           }
           value={email == null ? '' : email}
-          onChangeText={value => setEmail(value)}
+          onChangeText={value => setEmailEdit(value)}
         />
         <Text style={styles.subText}>Senha</Text>
         <TextInput
           style={
             styles.input}
           value={password == null ? '' : password}
-          onChangeText={value => setPassword(value)}
+          onChangeText={value => setPasswordEdit(value)}
           secureTextEntry={true}
         />
         <Text style={styles.subText}>Confirme a senha</Text>
@@ -87,11 +89,14 @@ export default function User() {
           style={
             styles.input}
           value={password == null ? '' : password}
-          onChangeText={value => setPassword(value)}
+          onChangeText={value => setPasswordEdit(value)}
           secureTextEntry={true}
         />
         <TouchableOpacity style={styles.button} onPress={() => alterar()}>
           <Text style={styles.buttonText}>Salvar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonSecond}>
+          <Text style={styles.buttonText}>Cancelar</Text>
         </TouchableOpacity>
       </Animatable.View>
     </View>
@@ -119,8 +124,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 10,
-    marginBottom: 30,
+    marginBottom: 10,
     textAlign: 'center'
   },
   text: {
@@ -144,11 +148,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#E0DCDC',
     borderRadius: 5,
     paddingVertical: 10,
+    flexDirection: 'row',
     width: '90%',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30
+    marginTop: 20
+  },
+  buttonSecond: {
+    backgroundColor: '#E0DCDC',
+    borderRadius: 5,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    width: '90%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
   },
   buttonText: {
     fontSize: 20,
