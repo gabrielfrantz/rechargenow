@@ -12,49 +12,50 @@ export default function User() {
   const navigation = useNavigation();
   const auth = getAuth();
   const user = auth.currentUser;
-  const [nome, setNome] = useState('')
-  const [email, setEmail] = useState('')
+
+  const [usuario, setUsuario] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [password, setPassword] = useState('')
-  const [userTeste, setUserTeste] = useState('')
-  const [nomeEdit, setNomeEdit] = useState('')
-  const [emailEdit, setEmailEdit] = useState('')
-  const [passwordEdit, setPasswordEdit] = useState('')
 
-  const [usuario, setUsuario] = useState({
-    nome: '',
-    email: '',
-    password: '',
-  })
-
-  async function alterar() {
-    const docSnap = await getDoc(doc(db, "user", user.uid));
-    updateDoc(docSnap.id, setEmailEdit, setNomeEdit, setPasswordEdit)
-    docSnap.data().nome = setNomeEdit
-    docSnap.data().email = setEmailEdit
+  async function editar() {
+    //updateDoc(docSnap.id, setEmailEdit, setNomeEdit, setPasswordEdit)
+    //docSnap.data().nome = setNomeEdit
+    //docSnap.data().email = setEmailEdit
     //const docSnap = await getDoc(doc(db, "user", user.uid));
-    //if (user.id = docSnap.id) {
-     // console.log("Uid", docSnap.id);
+    //const docSnap = await getDoc(doc(db, "user", user.uid));
+    if (password == passwordConfirm) {
+      console.log("igual")
+      if (password == '' || password == null) {
+        console.log(usuario.nome)
+        console.log(usuario.email)
+      }
+      else {
+        console.log(usuario.nome)
+        console.log(usuario.email)
+        console.log(password)
+      }
+    }
+  }
+  //console.log("Uid", docSnap.id);
+  //console.log("Nome:", docSnap.data().nome);
+  //console.log("Email:", docSnap.data().email);
+
+
+  async function carregar() {
+    const docSnap = await getDoc(doc(db, "user", user.uid));
+    if (user.id = docSnap.id) {
+      //console.log("Uid", docSnap.id);
+      setUsuario(docSnap.data());
       //console.log("Nome:", docSnap.data().nome);
+      //setNome(docSnap.data().nome);
       //console.log("Email:", docSnap.data().email);
-    //}
+      console.log(docSnap.data())
+    }
   }
 
   useEffect(() => {
     console.log("Entrou Effect")
-    const teste = collection(db, "user")
-    const querySnapshot = getDocs(teste)
-      .then
-      (querySnapshot => {
-        querySnapshot.forEach((doc) => {
-          if (user.id == doc.id) {
-            console.log("Uid", doc.id);
-            console.log("Nome", doc.data().nome);
-            setNome(doc.data().nome)
-            console.log("Email", doc.data().email);
-            setEmail(doc.data().email)
-          }
-        })
-      })
+    carregar()
   }, [])
 
   return (
@@ -66,34 +67,34 @@ export default function User() {
           style={
             styles.input
           }
-          value={nome}
-          onChangeText={value => setNomeEdit(value)}
+          value={usuario.nome}
+          onChangeText={value => setUsuario({ ...usuario, nome: value })}
         />
         <Text style={styles.subText}>E-mail</Text>
         <TextInput
           style={
             styles.input
           }
-          value={email}
-          onChangeText={value => setEmailEdit(value)}
+          value={usuario.email}
+          onChangeText={value => setUsuario({ ...usuario, email: value })}
         />
         <Text style={styles.subText}>Senha</Text>
         <TextInput
           style={
             styles.input}
           value={password}
-          onChangeText={value => setPasswordEdit(value)}
+          onChangeText={value => setPassword(value)}
           secureTextEntry={true}
         />
         <Text style={styles.subText}>Confirme a senha</Text>
         <TextInput
           style={
             styles.input}
-          value={password}
-          onChangeText={value => setPasswordEdit(value)}
+          value={passwordConfirm}
+          onChangeText={value => setPasswordConfirm(value)}
           secureTextEntry={true}
         />
-        <TouchableOpacity style={styles.button} onPress={() => alterar()}>
+        <TouchableOpacity style={styles.button} onPress={() => editar()}>
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonSecond}>
