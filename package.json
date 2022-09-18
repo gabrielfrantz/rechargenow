@@ -25,6 +25,7 @@
     "dotenv": "^16.0.1",
     "expo": "~45.0.0",
     "expo-auth-session": "~3.6.1",
+    "expo-cli": "^6.0.5",
     "expo-constants": "~13.1.1",
     "expo-google-app-auth": "~8.3.0",
     "expo-google-sign-in": "^10.2.0",

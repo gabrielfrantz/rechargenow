@@ -5,7 +5,7 @@ import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../config/firebase'
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 
 export default function User() {
 
@@ -17,29 +17,52 @@ export default function User() {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [password, setPassword] = useState('')
 
+  async function handleSignIn() {
+    const auth = getAuth()
+    await signInWithEmailAndPassword(auth, usuario.email, password)
+      .then((userCredential) => {
+        const user = userCredential.user
+        console.log("Usuário re-autenticado com sucesso! ")
+      })
+      .catch(error => console.log(error.message))
+  }
+
+  async function updateEmailForCurrentUser(email) {
+    console.log("email alterado")
+    handleSignIn()
+    return await updateEmail(user, email);
+  }
+
+  async function updatePasswordForCurrentUser(password) {
+    console.log("password alterado")
+    handleSignIn()
+    return await updatePassword(user, password);
+  }
+
   async function editar() {
-    //updateDoc(docSnap.id, setEmailEdit, setNomeEdit, setPasswordEdit)
-    //docSnap.data().nome = setNomeEdit
-    //docSnap.data().email = setEmailEdit
-    //const docSnap = await getDoc(doc(db, "user", user.uid));
-    //const docSnap = await getDoc(doc(db, "user", user.uid));
     if (password == passwordConfirm) {
-      console.log("igual")
+      console.log("igual");
       if (password == '' || password == null) {
-        console.log(usuario.nome)
-        console.log(usuario.email)
-      }
-      else {
-        console.log(usuario.nome)
-        console.log(usuario.email)
-        console.log(password)
+        console.log("if senha vazio")
+        const ref = doc(db, "user", user.uid);
+        updateDoc(ref, {
+          nome: usuario.nome,
+          email: usuario.email
+        })
+        updateEmailForCurrentUser(usuario.email)
+      } else {
+        console.log("else altera tudo")
+        const ref = doc(db, "user", user.uid);
+        updateDoc(ref, {
+          nome: usuario.nome,
+          email: usuario.email,
+          password: password
+        })
+        updateEmailForCurrentUser(usuario.email)
+        updatePasswordForCurrentUser(password)
       }
     }
   }
-  //console.log("Uid", docSnap.id);
-  //console.log("Nome:", docSnap.data().nome);
-  //console.log("Email:", docSnap.data().email);
-
 
   async function carregar() {
     const docSnap = await getDoc(doc(db, "user", user.uid));
@@ -51,6 +74,10 @@ export default function User() {
       //console.log("Email:", docSnap.data().email);
       console.log(docSnap.data())
     }
+  }
+
+  function limpar() {
+    setPassword('');
   }
 
   useEffect(() => {
@@ -98,7 +125,7 @@ export default function User() {
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonSecond}>
-          <Text style={styles.buttonText}>Cancelar</Text>
+          <Text style={styles.buttonText}>Cancelar onPress={() => limpar()}</Text>
         </TouchableOpacity>
       </Animatable.View>
     </View>
