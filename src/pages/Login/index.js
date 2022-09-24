@@ -10,15 +10,13 @@ import { doc, setDoc, getDoc, getDocs, collection } from 'firebase/firestore'
 export default function Login() {
     const navigation = useNavigation();
     const [email, setEmail] = useState('gabifrantz@gmail.com')
-    const [password, setPassword] = useState('gabriel123')
+    const [password, setPassword] = useState('gabriel1234')
     
     async function handleSignIn() {
         const auth = getAuth()
         await signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user
-                console.log(email)
-                console.log(password)
                 console.log("Login efetuado com sucesso! ")
                 navigation.navigate('Menu')
             })

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { collection, addDoc } from 'firebase/firestore'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, SafeAreaView, Modal } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { db } from '../../config/firebase'
 import Electropost from '../../pages/Electropost'
+import { render } from 'react-dom'
 
 export default function RegisterElectropost({ change }) {
 
@@ -48,6 +49,42 @@ export default function RegisterElectropost({ change }) {
             contato: contato
         })
     }
+
+    const [toggleCheckBox, setToggleCheckBox] = useState(false);
+    const [complianceModal, setComplianceModal] = useState(true);
+
+
+    const checkPlug = () => {
+        console.log("entrou plugssss")
+        const optionsCheckBox = [
+            { text: 'Tipo 1', id: 1 },
+            { text: 'Tipo 2', id: 2 },
+            { text: 'CCS 1', id: 3 },
+            { text: 'CCS 2', id: 4 },
+            { text: 'CHAdeMO', id: 5 },
+            { text: 'GB/T', id: 6 },
+            { text: 'Tesla', id: 7 }
+        ]
+        return (
+            <View>
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={complianceModal}>
+                    <SafeAreaView>
+                        <ScrollView>
+                            <View style={styles.modalContainer}>
+                                <View style={styles.modalView}>
+                                    <Text>Selecione os plugues compatíveis com seu veículo</Text>
+                                </View>
+                            </View>
+                        </ScrollView>
+                    </SafeAreaView>
+                </Modal>
+            </View>
+        )
+    }
+
 
     return (
         <View style={styles.container}>
@@ -102,7 +139,7 @@ export default function RegisterElectropost({ change }) {
                         onChangeText={value => setUF(value)}
                     />
                     <Text style={styles.subText}>Tipos de Plugues</Text>
-                    <TouchableOpacity style={styles.buttonSecond} >
+                    <TouchableOpacity style={styles.buttonSecond} onPress={() => checkPlug()} >
                         <Text style={styles.buttonText}>Adicionar plugues</Text>
                         <View style={styles.buttonIconSeparator} />
                         <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
@@ -140,6 +177,21 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#000000'
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0, .6)',
+        alignItems: 'center'
+    },
+    modalView: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        borderRadius: '20',
+        margin: '20',
+        padding: '20',
     },
     containerForm: {
         flex: 1,

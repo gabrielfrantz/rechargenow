@@ -1,27 +1,60 @@
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Modal } from 'react-native'
 import React from 'react'
 import CheckBox from '../../components/CheckBox'
 
-const checkPlug = () => {
-  const optionsCheckBox = [
-    { text: 'Tipo 1', id: 1 },
-    { text: 'Tipo 2', id: 2 },
-    { text: 'CCS 1', id: 3 },
-    { text: 'CCS 2', id: 4 },
-    { text: 'CHAdeMO', id: 5 },
-    { text: 'GB/T', id: 6 },
-    { text: 'Tesla', id: 7 }
-  ]
-  return (
-    <SafeAreaView style={StyleSheet.container}>
-      <CheckBox options={optionsCheckBox} onChange={(op) => alert('op')} multiple={true} />
-    </SafeAreaView>
-  )
+export default function Plugs() {
+
+
+  console.log("entrou plugs")
+  const checkPlug = () => {
+    const optionsCheckBox = [
+      { text: 'Tipo 1', id: 1 },
+      { text: 'Tipo 2', id: 2 },
+      { text: 'CCS 1', id: 3 },
+      { text: 'CCS 2', id: 4 },
+      { text: 'CHAdeMO', id: 5 },
+      { text: 'GB/T', id: 6 },
+      { text: 'Tesla', id: 7 }
+    ]
+    return (
+      <View>
+        <Modal
+          animationTypo='slide'
+          transparent={true}
+          visible={complianceModal}>
+          <ScrollView>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalView}>
+                <Text>Selecione os plugues compatíveis com seu veículo</Text>
+              </View>
+            </View>
+          </ScrollView>
+        </Modal>
+      </View>
+    )
+  }
+
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000'
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0, .6)',
+    alignItems: 'center'
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    borderRadius: '20',
+    margin: '20',
+    padding: '20',
   },
   containerForm: {
     flex: 5,

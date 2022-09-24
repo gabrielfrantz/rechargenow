@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, } from 'react-native'
-import MapView from 'react-native-maps'
+import React, { useState, useEffect } from 'react'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, PermissionsAndroid, Platform } from 'react-native'
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native';
 import RegisterElectropost from '../../pages/RegisterElectropost'
+import Geolocation from 'react-native-geolocation-service'
 import Electropost from '../../pages/Electropost'
+import * as Location from 'expo-location';
 
 export default function Maps() {
     const navigation = useNavigation();
@@ -14,6 +16,64 @@ export default function Maps() {
     const change = () => {
         setRegister(false);
     }
+
+    const [currentLatitude, setCurrentLatitude] = useState('');
+    const [currentLongitude, setCurrentLongitude] = useState('');
+    const [watchID, setWatchID] = useState(0);
+
+    const callLocation = () => {
+        if (Platform.OS === 'ios') {
+            getLocation();
+        } else {
+            const requestLocationPermission = async () => {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    {
+                        title: "Permissão de acesso à localização",
+                        message: "Este aplicativo precisa ter acesso a sua localização",
+                        buttonPositive: "Permitir",
+                        buttonNegative: "Cancelar"
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    getLocation();
+                } else {
+                    alert('Permissão de localização negada');
+                }
+            };
+            requestLocationPermission();
+        }
+    }
+
+    const getLocation = () => {
+        console.log("entrou getlocation")
+        Geolocation.getCurrentPosition(
+            ({ position }) => {
+                const currentLatitude = JSON.stringify(position.coords.latitude);
+                const currentLongitude = JSON.stringify(position.coords.longitude);
+                setCurrentLatitude(currentLatitude);
+                setCurrentLongitude(currentLongitude);
+            },
+            (error) => alert(error.message),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
+        const watchID = Geolocation.watchPosition((position) => {
+            const currentLatitude = JSON.stringify(position.coords.latitude);
+            const currentLongitude = JSON.stringify(position.coords.longitude);
+            setCurrentLatitude(currentLatitude);
+            setCurrentLongitude(currentLongitude);
+        });
+        setWatchID(watchID);
+    }
+
+    const clearLocation = () => {
+        Geolocation.clearWatch(watchID);
+    }
+
+    useEffect(() => {
+        console.log("Entrou Effect")
+        callLocation()
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -25,7 +85,19 @@ export default function Maps() {
                     <MapView
                         style={styles.map}
                         provider={MapView.PROVIDER_GOOGLE}
+                        region={{
+                            latitude: -29.6015984,
+                            longitude: -52.1839037,
+                            latitudeDelta: 0.015,
+                            longitudeDelta: 0.015,
+                        }}
                     >
+                        <Marker coordinate={{
+                            latitude: -29.6015984,
+                            longitude: -52.1839037,
+                        }}
+                            image={require('../../assets/marker3.png')}
+                        />
                     </MapView>
                     <TouchableOpacity style={styles.button}>
                         <Text style={styles.buttonText}>Localizar estações mais próximas</Text>

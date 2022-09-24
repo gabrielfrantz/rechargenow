@@ -22,28 +22,23 @@ export default function User() {
     await signInWithEmailAndPassword(auth, usuario.email, password)
       .then((userCredential) => {
         const user = userCredential.user
-        console.log("Usuário re-autenticado com sucesso! ")
       })
       .catch(error => console.log(error.message))
   }
 
   async function updateEmailForCurrentUser(email) {
-    console.log("email alterado")
     handleSignIn()
     return await updateEmail(user, email);
   }
 
   async function updatePasswordForCurrentUser(password) {
-    console.log("password alterado")
     handleSignIn()
     return await updatePassword(user, password);
   }
 
   async function editar() {
     if (password == passwordConfirm) {
-      console.log("igual");
       if (password == '' || password == null) {
-        console.log("if senha vazio")
         const ref = doc(db, "user", user.uid);
         updateDoc(ref, {
           nome: usuario.nome,
@@ -51,7 +46,6 @@ export default function User() {
         })
         updateEmailForCurrentUser(usuario.email)
       } else {
-        console.log("else altera tudo")
         const ref = doc(db, "user", user.uid);
         updateDoc(ref, {
           nome: usuario.nome,
@@ -72,7 +66,6 @@ export default function User() {
       //console.log("Nome:", docSnap.data().nome);
       //setNome(docSnap.data().nome);
       //console.log("Email:", docSnap.data().email);
-      console.log(docSnap.data())
     }
   }
 
@@ -81,7 +74,6 @@ export default function User() {
   }
 
   useEffect(() => {
-    console.log("Entrou Effect")
     carregar()
   }, [])
 
