@@ -42,8 +42,9 @@ export default function Vehicles() {
         <RegisterVehicles change={change} />
       ) : (
         <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-          <Text style={styles.text2}>{global.texto}</Text>
+
           <ScrollView>
+            <Text style={styles.text2}>{global.texto}</Text>
             <View style={styles.containerForm2} >
               <Image style={styles.buttonImagemIconStyle} source={require('../../assets/car.png')} />
               <TextInput
@@ -98,11 +99,14 @@ export default function Vehicles() {
               <TouchableOpacity style={styles.buttonSecond}>
                 <Text style={styles.buttonText2}>Editar</Text>
               </TouchableOpacity>
+              <TouchableOpacity style={styles.button3}>
+                <Text style={styles.buttonText2}>Excluir</Text>
+              </TouchableOpacity>
             </View>
+            <TouchableOpacity style={styles.button} onPress={() => setRegister(true)}>
+              <Text style={styles.buttonText}>Adicionar novo veículo</Text>
+            </TouchableOpacity>
           </ScrollView>
-          <TouchableOpacity style={styles.button} onPress={() => setRegister(true)}>
-            <Text style={styles.buttonText}>Adicionar novo veículo</Text>
-          </TouchableOpacity>
         </Animatable.View>
       )}
     </View>
@@ -128,7 +132,8 @@ const styles = StyleSheet.create({
     paddingStart: '20%',
     paddingEnd: '20%',
     borderRadius: 50,
-    borderWidth: 2
+    borderWidth: 2,
+    marginTop: 20
   },
   text: {
     color: '#515151',
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
     color: '#515151',
     textAlign: 'center',
     fontSize: 16,
-    marginBottom: 30
+    marginBottom: 10
   },
   text3: {
     color: '#515151',
@@ -155,7 +160,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    //marginTop: 410
+    marginTop: 20,
+    marginBottom: 20
   },
   buttonText2: {
     fontSize: 14,
@@ -171,8 +177,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
+    marginBottom: 5,
+    marginTop: 5
+  },
+  button3: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    width: '50%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
     marginBottom: 10,
-    marginTop: 15
+    marginTop: 5
   },
   buttonText: {
     fontSize: 20,
