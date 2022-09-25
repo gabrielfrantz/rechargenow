@@ -5,6 +5,7 @@ import RegisterVehicles from '../../pages/RegisterVehicles'
 import { auth, db } from '../../config/firebase'
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
+
 export default function Vehicles() {
 
 
@@ -15,6 +16,9 @@ export default function Vehicles() {
   }, [])
 
   const [register, setRegister] = useState(false);
+  const [showElement, setShowElement] = useState(false)
+  const showOrHide = () => setShowElement(true)
+
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -42,7 +46,6 @@ export default function Vehicles() {
         <RegisterVehicles change={change} />
       ) : (
         <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-
           <ScrollView>
             <Text style={styles.text2}>{global.texto}</Text>
             <View style={styles.containerForm2} >

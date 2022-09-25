@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, PermissionsAndroid, Platform } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
+import { Ionicons } from 'react-native-ionicons'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
 import RegisterElectropost from '../../pages/RegisterElectropost'
 import Geolocation from 'react-native-geolocation-service'
 import Electropost from '../../pages/Electropost'
 import * as Location from 'expo-location'
+import { auth, db } from '../../config/firebase'
+import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 
 export default function Maps() {
     const navigation = useNavigation();
@@ -16,6 +20,9 @@ export default function Maps() {
     const change = () => {
         setRegister(false);
     }
+
+    const auth = getAuth();
+    const user = auth.currentUser;
 
     const [currentLatitude, setCurrentLatitude] = useState('');
     const [currentLongitude, setCurrentLongitude] = useState('');
@@ -87,10 +94,14 @@ export default function Maps() {
                 //<Electropost change={change} />
             ) : (
                 <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
+                    <View style={styles.cabecalho}>
                         <TextInput
                             style={
                                 styles.input}
+                            placeholder=" Pesquisar endereço"
                         />
+                        <Image style={styles.buttonImagemIconStyle2} source={require('../../assets/pesquisa.png')} />
+                    </View>
                     <MapView
                         style={styles.map}
                         provider={MapView.PROVIDER_GOOGLE}
@@ -198,8 +209,15 @@ const styles = StyleSheet.create({
         width: 25,
         resizeMode: 'stretch'
     },
+    buttonImagemIconStyle2: {        
+        margin: 1,
+        height: 30,
+        width: 30,
+        resizeMode: 'stretch'
+    },
     input: {
         height: 30,
+        width: 320,
         marginBottom: 5,
         backgroundColor: '#FFFFFF',
         borderTopWidth: 1,
@@ -207,5 +225,8 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
         borderBottomWidth: 1,
         borderRadius: 5,
+    },
+    cabecalho: {
+        flexDirection: "row"
     }
 })

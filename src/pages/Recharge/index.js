@@ -17,7 +17,7 @@ export default class Recharge extends Component {
           flashMode={RNCamera.Constants.FlashMode.off}
         />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.capture}>
+          <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}> Aponte a câmera para scannear o QR Code </Text>
           </TouchableOpacity>
         </View>
@@ -42,16 +42,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center"
   },
-  capture: {
-    flex: 0,
-    backgroundColor: "#fff",
+  button: {
+    backgroundColor: '#E0DCDC',
     borderRadius: 5,
-    padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: "center",
-    margin: 20
-  },
+    paddingVertical: 10,
+    width: '90%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20
+},
   buttonText: {
-    fontSize: 14
-  }
+    fontSize: 16,
+    color: '#000000'
+},
 });
