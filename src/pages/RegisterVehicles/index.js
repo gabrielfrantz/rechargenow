@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { collection, addDoc } from 'firebase/firestore'
 import { SafeAreaView, Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, Alert } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { auth, db } from '../../config/firebase'
+import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 
 
 export default function RegisterVehicles({ change }) {
@@ -12,6 +13,9 @@ export default function RegisterVehicles({ change }) {
     const changeData = () => {
         setRegister(false);
     }
+
+    const auth = getAuth();
+    const user = auth.currentUser;
 
     const [marca, setMarca] = useState('')
     const [modelo, setModelo] = useState('')
@@ -29,10 +33,10 @@ export default function RegisterVehicles({ change }) {
         console.log(bateria)
         console.log(tipoVeiculo)
         console.log("Veículo cadastrado com sucesso! ")
-        const docRef = addDoc(collection(db, "vehicles"), {
+        setDoc(doc(db, "vehicles", user.uid), {
             marca: marca,
             modelo: modelo,
-            plugues: plugues,
+            //plugues: plugues,
             placa: placa,
             bateria: bateria,
             veiculo: tipoVeiculo

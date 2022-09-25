@@ -116,8 +116,8 @@ export default function User() {
         <TouchableOpacity style={styles.button} onPress={() => editar()}>
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSecond}>
-          <Text style={styles.buttonText}>Cancelar onPress={() => limpar()}</Text>
+        <TouchableOpacity style={styles.buttonSecond} onPress={() => limpar()}>
+          <Text style={styles.buttonText}>Cancelar</Text>
         </TouchableOpacity>
       </Animatable.View>
     </View>

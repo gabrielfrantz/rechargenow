@@ -1,27 +1,109 @@
-import React, {useState} from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import RegisterVehicles from '../../pages/RegisterVehicles'
-
+import { auth, db } from '../../config/firebase'
+import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 export default function Vehicles() {
 
+
+  useEffect(() => {
+    global.texto = "Nenhum veículo cadastrado!"
+    console.log("entrou effect veiculos")
+    carregar()
+  }, [])
+
   const [register, setRegister] = useState(false);
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   const change = () => {
-      setRegister(false);
+    setRegister(false);
+  }
+
+  const [carro, setCarro] = useState('')
+
+  async function carregar() {
+    console.log("carregar veiculos")
+    const docSnap = await getDoc(doc(db, "vehicles", user.id));
+    if (user.id = docSnap.id) {
+      global.texto = "Veículos cadastrados!"
+      setCarro(docSnap.data());
+      console.log("mandou tudo")
+    } else {
+      global.texto = "Nenhum veículo cadastrado!"
+    }
   }
 
   return (
     <View style={styles.container}>
       {register ? (
-      <RegisterVehicles change={change}/>
+        <RegisterVehicles change={change} />
       ) : (
-      <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-        <Text style={styles.text}>Nenhum veículo cadastrado!</Text>
-        <TouchableOpacity style={styles.button} onPress={() => setRegister(true) }>
-          <Text style={styles.buttonText}>Adicionar novo veículo</Text>
-        </TouchableOpacity>
-      </Animatable.View>
+        <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
+          <Text style={styles.text2}>{global.texto}</Text>
+          <ScrollView>
+            <View style={styles.containerForm2} >
+              <Image style={styles.buttonImagemIconStyle} source={require('../../assets/car.png')} />
+              <TextInput
+                style={
+                  styles.input}
+                value={carro.veiculo}
+                editable={false}
+                selectTextOnFocus={false}
+              //onChangeText={value => setCarro({ ...carro, veiculo: value })}
+              />
+              <TextInput
+                style={
+                  styles.input3}
+                value={carro.bateria + " kW"}
+                editable={false}
+                selectTextOnFocus={false}
+              //onChangeText={value => setCarro({ ...carro, bateria: value })}
+              />
+              <Text style={styles.text3}>____________________________</Text>
+              <TextInput
+                style={
+                  styles.input}
+                value={carro.marca}
+                editable={false}
+                selectTextOnFocus={false}
+              //onChangeText={value => setCarro({ ...carro, marca: value })}
+              />
+              <TextInput
+                style={
+                  styles.input}
+                value={carro.modelo}
+                editable={false}
+                selectTextOnFocus={false}
+              //onChangeText={value => setCarro({ ...carro, modelo: value })}
+              />
+              <TextInput
+                style={
+                  styles.input}
+                value={carro.placa}
+                editable={false}
+                selectTextOnFocus={false}
+              //onChangeText={value => setCarro({ ...carro, placa: value })}
+              />
+              <TextInput
+                style={
+                  styles.input2}
+                value={carro.plugues}
+                editable={false}
+                selectTextOnFocus={false}
+              //onChangeText={value => setCarro({ ...carro, plugues: value })}
+              />
+              <TouchableOpacity style={styles.buttonSecond}>
+                <Text style={styles.buttonText2}>Editar</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+          <TouchableOpacity style={styles.button} onPress={() => setRegister(true)}>
+            <Text style={styles.buttonText}>Adicionar novo veículo</Text>
+          </TouchableOpacity>
+        </Animatable.View>
       )}
     </View>
   );
@@ -40,33 +122,57 @@ const styles = StyleSheet.create({
     paddingEnd: '5%',
     height: '60%'
   },
+  containerForm2: {
+    flex: 3,
+    backgroundColor: '#E0DCDC',
+    paddingStart: '20%',
+    paddingEnd: '20%',
+    borderRadius: 50,
+    borderWidth: 2
+  },
   text: {
     color: '#515151',
     textAlign: 'center',
     fontSize: 16,
-    marginTop: 10
+  },
+  text2: {
+    color: '#515151',
+    textAlign: 'center',
+    fontSize: 16,
+    marginBottom: 30
+  },
+  text3: {
+    color: '#515151',
+    textAlign: 'center',
+    fontSize: 16,
+    marginBottom: 10
   },
   button: {
     backgroundColor: '#E0DCDC',
     borderRadius: 5,
     paddingVertical: 10,
-    flexDirection: 'row',
     width: '90%',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 450
+    //marginTop: 410
+  },
+  buttonText2: {
+    fontSize: 14,
+    color: '#000000'
   },
   buttonSecond: {
-    backgroundColor: '#E0DCDC',
-    borderRadius: 5,
-    paddingVertical: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    paddingVertical: 5,
     flexDirection: 'row',
-    width: '90%',
+    width: '50%',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10
+    borderWidth: 2,
+    marginBottom: 10,
+    marginTop: 15
   },
   buttonText: {
     fontSize: 20,
@@ -76,10 +182,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000'
   },
   buttonImagemIconStyle: {
-    padding: 10,
     margin: 5,
-    height: 25,
-    width: 25,
+    height: 40,
+    width: 40,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     resizeMode: 'stretch'
+  },
+  input: {
+    color: '#515151',
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  input2: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  input3: {
+    color: 'green',
+    textAlign: 'center',
+    fontSize: 16,
   }
 })
