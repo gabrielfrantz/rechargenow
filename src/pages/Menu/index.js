@@ -11,6 +11,7 @@ import Travel from '../../pages/Travel'
 import Electropost from '../../pages/Electropost'
 import Plugs from '../../pages/Plugs'
 import RegisterElectropost from '../../pages/RegisterElectropost'
+import Recharge from '../../pages/Recharge'
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -70,7 +71,7 @@ export default function Menu() {
                     />
                     <Tab.Screen
                         name=" Carregar"
-                        component={Travel}
+                        component={Recharge}
                         options={{
                             tabBarIcon: () => (
                                 <Image source={require('../../assets/menuRecarregar.png')} />

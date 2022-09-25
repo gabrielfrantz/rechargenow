@@ -3,11 +3,11 @@ import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Permissions
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
 import * as Animatable from 'react-native-animatable'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
 import RegisterElectropost from '../../pages/RegisterElectropost'
 import Geolocation from 'react-native-geolocation-service'
 import Electropost from '../../pages/Electropost'
-import * as Location from 'expo-location';
+import * as Location from 'expo-location'
 
 export default function Maps() {
     const navigation = useNavigation();
@@ -70,6 +70,11 @@ export default function Maps() {
         Geolocation.clearWatch(watchID);
     }
 
+    function eletropostos() {
+        console.log("entrou eletropostos")
+
+    }
+
     useEffect(() => {
         console.log("Entrou Effect")
         callLocation()
@@ -82,6 +87,10 @@ export default function Maps() {
                 //<Electropost change={change} />
             ) : (
                 <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
+                        <TextInput
+                            style={
+                                styles.input}
+                        />
                     <MapView
                         style={styles.map}
                         provider={MapView.PROVIDER_GOOGLE}
@@ -99,7 +108,7 @@ export default function Maps() {
                             image={require('../../assets/marker3.png')}
                         />
                     </MapView>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={() => eletropostos()}>
                         <Text style={styles.buttonText}>Localizar estações mais próximas</Text>
                         <View style={styles.buttonIconSeparator} />
                         <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
@@ -144,10 +153,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    text2: {
+        color: '#515151',
+        textAlign: 'center',
+        fontSize: 16,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     button: {
         backgroundColor: '#E0DCDC',
         borderRadius: 5,
-        paddingVertical: 10,
+        paddingVertical: 2,
         flexDirection: 'row',
         width: '100%',
         alignSelf: 'center',
@@ -159,7 +176,7 @@ const styles = StyleSheet.create({
     buttonSecond: {
         backgroundColor: '#E0DCDC',
         borderRadius: 5,
-        paddingVertical: 10,
+        paddingVertical: 2,
         flexDirection: 'row',
         width: '100%',
         alignSelf: 'center',
@@ -180,5 +197,15 @@ const styles = StyleSheet.create({
         height: 25,
         width: 25,
         resizeMode: 'stretch'
+    },
+    input: {
+        height: 30,
+        marginBottom: 5,
+        backgroundColor: '#FFFFFF',
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderRadius: 5,
     }
 })

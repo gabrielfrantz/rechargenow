@@ -4,7 +4,6 @@ import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView,
 import * as Animatable from 'react-native-animatable'
 import { db } from '../../config/firebase'
 import Electropost from '../../pages/Electropost'
-import { render } from 'react-dom'
 
 export default function RegisterElectropost({ change }) {
 
@@ -84,7 +83,6 @@ export default function RegisterElectropost({ change }) {
             </View>
         )
     }
-
 
     return (
         <View style={styles.container}>
