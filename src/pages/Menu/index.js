@@ -9,7 +9,6 @@ import RegisterVehicles from '../../pages/RegisterVehicles'
 import Maps from '../../pages/Maps'
 import Travel from '../../pages/Travel'
 import Electropost from '../../pages/Electropost'
-import Plugs from '../../pages/Plugs'
 import RegisterElectropost from '../../pages/RegisterElectropost'
 import Recharge from '../../pages/Recharge'
 

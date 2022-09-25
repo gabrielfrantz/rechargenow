@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView,
 import * as Animatable from 'react-native-animatable'
 import { db } from '../../config/firebase'
 import Electropost from '../../pages/Electropost'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 export default function RegisterElectropost({ change }) {
 
@@ -49,40 +50,16 @@ export default function RegisterElectropost({ change }) {
         })
     }
 
-    const [toggleCheckBox, setToggleCheckBox] = useState(false);
-    const [complianceModal, setComplianceModal] = useState(true);
-
-
-    const checkPlug = () => {
-        console.log("entrou plugssss")
-        const optionsCheckBox = [
-            { text: 'Tipo 1', id: 1 },
-            { text: 'Tipo 2', id: 2 },
-            { text: 'CCS 1', id: 3 },
-            { text: 'CCS 2', id: 4 },
-            { text: 'CHAdeMO', id: 5 },
-            { text: 'GB/T', id: 6 },
-            { text: 'Tesla', id: 7 }
-        ]
-        return (
-            <View>
-                <Modal
-                    animationType='slide'
-                    transparent={true}
-                    visible={complianceModal}>
-                    <SafeAreaView>
-                        <ScrollView>
-                            <View style={styles.modalContainer}>
-                                <View style={styles.modalView}>
-                                    <Text>Selecione os plugues compatíveis com seu veículo</Text>
-                                </View>
-                            </View>
-                        </ScrollView>
-                    </SafeAreaView>
-                </Modal>
-            </View>
-        )
-    }
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(['CHAdeMO', 'CCS 1', 'CCS 2', 'GB/T', 'Tipo 1', 'Tipo 2', 'Tesla']);
+    const [items, setItems] = useState([
+        { label: 'CHAdeMO', value: 'CHAdeMO' },
+        { label: 'CCS 1', value: 'CCS 1' },
+        { label: 'CCS 2', value: 'CCS 2' },
+        { label: 'GB/T', value: 'GB/T' },
+        { label: 'Tipo 1', value: 'Tipo 1' },
+        { label: 'Tipo 2', value: 'Tipo 2' }
+    ]);
 
     return (
         <View style={styles.container}>
@@ -137,11 +114,18 @@ export default function RegisterElectropost({ change }) {
                         onChangeText={value => setUF(value)}
                     />
                     <Text style={styles.subText}>Tipos de Plugues</Text>
-                    <TouchableOpacity style={styles.buttonSecond} onPress={() => checkPlug()} >
-                        <Text style={styles.buttonText}>Adicionar plugues</Text>
-                        <View style={styles.buttonIconSeparator} />
-                        <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
-                    </TouchableOpacity>
+                        <DropDownPicker
+                            placeholder="Selecione os plugues compatíveis"
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                            multiple={true}
+                            mode="BADGE"
+                            badgeDotColors={["#e76f51"]}
+                        />
                     <Text style={styles.subText}>Potência (kW)</Text>
                     <TextInput
                         style={

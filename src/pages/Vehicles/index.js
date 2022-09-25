@@ -5,6 +5,7 @@ import RegisterVehicles from '../../pages/RegisterVehicles'
 import { auth, db } from '../../config/firebase'
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
+import DropDownPicker from 'react-native-dropdown-picker'
 
 export default function Vehicles() {
 
