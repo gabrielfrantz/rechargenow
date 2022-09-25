@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable'
 import { auth, db } from '../../config/firebase'
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
-
+import DropDownPicker from 'react-native-dropdown-picker'
 
 export default function RegisterVehicles({ change }) {
 
@@ -14,6 +14,8 @@ export default function RegisterVehicles({ change }) {
         setRegister(false);
     }
 
+    DropDownPicker.setListMode("SCROLLVIEW");
+
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -22,6 +24,17 @@ export default function RegisterVehicles({ change }) {
     const [plugues, setPlugues] = useState('')
     const [placa, setPlaca] = useState('')
     const [bateria, setBateria] = useState('')
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(['Tipo 2']);
+    const [items, setItems] = useState([
+        { label: 'CHAdeMO', value: 'CHAdeMO' },
+        { label: 'CCS 1', value: 'CCS 1' },
+        { label: 'CCS 2', value: 'CCS 2' },
+        { label: 'GB/T', value: 'GB/T' },
+        { label: 'Tipo 1', value: 'Tipo 1' },
+        { label: 'Tipo 2', value: 'Tipo 2' }
+    ]);
 
     var tipoVeiculo
 
@@ -78,11 +91,22 @@ export default function RegisterVehicles({ change }) {
                         onChangeText={value => setModelo(value)}
                     />
                     <Text style={styles.subText}>Tipos de Plugues</Text>
-                    <TouchableOpacity style={styles.buttonPlugues} >
-                        <Text style={styles.buttonTextPlugues}>Adicionar plugues</Text>
-                        <View style={styles.buttonIconSeparator} />
-                        <Image style={styles.buttonImagemIconStyle2} source={require('../../assets/add.png')} />
-                    </TouchableOpacity>
+                    <View>
+                        <DropDownPicker
+                            style={styles.dropdown}
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                            placeholder="Selecione os plugues compatíveis"
+                            placeholderStyle={styles.placeholderStyles}
+                            multiple={true}
+                            mode="BADGE"
+                            badgeDotColors={["#e76f51"]}
+                        />
+                    </View>
                     <Text style={styles.subText}>Placa</Text>
                     <TextInput
                         style={

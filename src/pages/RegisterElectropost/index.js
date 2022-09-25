@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { collection, addDoc } from 'firebase/firestore'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, SafeAreaView, Modal } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, SafeAreaView, Modal, FlatList } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { db } from '../../config/firebase'
 import Electropost from '../../pages/Electropost'
@@ -13,6 +13,8 @@ export default function RegisterElectropost({ change }) {
     const changeData = () => {
         setRegister(false);
     }
+
+    DropDownPicker.setListMode("SCROLLVIEW");
 
     const [local, setLocal] = useState('')
     const [endereco, setEndereco] = useState('')
@@ -51,7 +53,7 @@ export default function RegisterElectropost({ change }) {
     }
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(['CHAdeMO', 'CCS 1', 'CCS 2', 'GB/T', 'Tipo 1', 'Tipo 2', 'Tesla']);
+    const [value, setValue] = useState(['Tipo 2']);
     const [items, setItems] = useState([
         { label: 'CHAdeMO', value: 'CHAdeMO' },
         { label: 'CCS 1', value: 'CCS 1' },
@@ -114,18 +116,22 @@ export default function RegisterElectropost({ change }) {
                         onChangeText={value => setUF(value)}
                     />
                     <Text style={styles.subText}>Tipos de Plugues</Text>
+                    <View>
                         <DropDownPicker
-                            placeholder="Selecione os plugues compatíveis"
+                            style={styles.dropdown}
                             open={open}
                             value={value}
                             items={items}
                             setOpen={setOpen}
                             setValue={setValue}
                             setItems={setItems}
+                            placeholder="Selecione os plugues compatíveis"
+                            placeholderStyle={styles.placeholderStyles}
                             multiple={true}
                             mode="BADGE"
                             badgeDotColors={["#e76f51"]}
                         />
+                    </View>
                     <Text style={styles.subText}>Potência (kW)</Text>
                     <TextInput
                         style={
@@ -241,30 +247,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginTop: 1
     },
-    inputMenor: {
-        height: 30,
-        width: 50,
-        marginBottom: 12,
-        backgroundColor: '#FFFFFF',
-        borderTopWidth: 1,
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
-        borderBottomWidth: 1,
-        borderRadius: 5,
-        marginTop: 1
-    },
-    inputMenor2: {
-        height: 30,
-        width: 30,
-        marginBottom: 12,
-        backgroundColor: '#FFFFFF',
-        borderTopWidth: 1,
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
-        borderBottomWidth: 1,
-        borderRadius: 5,
-        marginTop: 1
-    },
     buttonIconSeparator: {
         backgroundColor: '#000000'
     },
@@ -274,5 +256,22 @@ const styles = StyleSheet.create({
         height: 20,
         width: 20,
         resizeMode: 'stretch'
-    }
+    },
+    dropdown: {
+        backgroundColor: '#FFFFFF',
+        height: 50,
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        marginBottom: 12,
+        borderRadius: 5,
+        marginTop: 1,
+    },
+    placeholderStyles: {
+        color: "#515151",
+        textAlign: 'center',
+        fontSize: 14
+    },
+
 })
