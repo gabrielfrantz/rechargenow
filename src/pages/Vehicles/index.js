@@ -26,6 +26,17 @@ export default function Vehicles() {
   const change = () => {
     setRegister(false);
   }
+  DropDownPicker.setListMode("SCROLLVIEW");
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(['Tipo 2']);
+  const [items, setItems] = useState([
+      { label: 'CHAdeMO', value: 'CHAdeMO' },
+      { label: 'CCS 1', value: 'CCS 1' },
+      { label: 'CCS 2', value: 'CCS 2' },
+      { label: 'GB/T', value: 'GB/T' },
+      { label: 'Tipo 1', value: 'Tipo 1' },
+      { label: 'Tipo 2', value: 'Tipo 2' }
+  ]);
 
   const [carro, setCarro] = useState('')
 
@@ -35,6 +46,7 @@ export default function Vehicles() {
     if (user.id = docSnap.id) {
       global.texto = "Veículos cadastrados!"
       setCarro(docSnap.data());
+      console.log(docSnap.data().plugues[0])
       console.log("mandou tudo")
     } else {
       global.texto = "Nenhum veículo cadastrado!"
@@ -95,7 +107,7 @@ export default function Vehicles() {
               <TextInput
                 style={
                   styles.input2}
-                value={carro.plugues}
+                value={carro.plugues[0]}
                 editable={false}
                 selectTextOnFocus={false}
               //onChangeText={value => setCarro({ ...carro, plugues: value })}

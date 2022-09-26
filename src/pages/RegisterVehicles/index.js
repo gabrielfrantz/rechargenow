@@ -21,7 +21,6 @@ export default function RegisterVehicles({ change }) {
 
     const [marca, setMarca] = useState('')
     const [modelo, setModelo] = useState('')
-    const [plugues, setPlugues] = useState('')
     const [placa, setPlaca] = useState('')
     const [bateria, setBateria] = useState('')
 
@@ -41,7 +40,7 @@ export default function RegisterVehicles({ change }) {
     function newVehicle() {
         console.log(marca)
         console.log(modelo)
-        console.log(plugues)
+        console.log(value)
         console.log(placa)
         console.log(bateria)
         console.log(tipoVeiculo)
@@ -49,7 +48,7 @@ export default function RegisterVehicles({ change }) {
         setDoc(doc(db, "vehicles", user.uid), {
             marca: marca,
             modelo: modelo,
-            //plugues: plugues,
+            plugues: value,
             placa: placa,
             bateria: bateria,
             veiculo: tipoVeiculo
