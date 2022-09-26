@@ -274,5 +274,21 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderRadius: 5,
         marginTop: 2,
-    }
+    },
+    dropdown: {
+        backgroundColor: '#FFFFFF',
+        height: 50,
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        marginBottom: 12,
+        borderRadius: 5,
+        marginTop: 1,
+    },
+    placeholderStyles: {
+        color: "#515151",
+        textAlign: 'center',
+        fontSize: 14
+    },
 })

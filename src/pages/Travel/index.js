@@ -12,6 +12,7 @@ import Maps from '../../pages/Maps'
 import { auth, db } from '../../config/firebase'
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
+import DropDownPicker from 'react-native-dropdown-picker'
 
 export default function Travel() {
 
@@ -25,6 +26,35 @@ export default function Travel() {
   const [destino, setDestino] = useState('')
   const [veiculo, setVeiculo] = useState('')
 
+  useEffect(() => {
+    console.log("entrou effect travel-veiculos")
+    carregar()
+  }, [])
+
+  async function carregar() {
+    console.log("carregar veiculos")
+    const docSnap = await getDoc(doc(db, "vehicles", user.id));
+    if (user.id = docSnap.id) {
+      setCarro(docSnap.data());
+      console.log(docSnap.data().plugues[0])
+      console.log("mandou tudo")
+    } else {
+      global.texto = "Nenhum veículo cadastrado!"
+    }
+  }
+
+  DropDownPicker.setListMode("SCROLLVIEW");
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(['Tipo 2']);
+  const [items, setItems] = useState([
+      { label: 'CHAdeMO', value: 'CHAdeMO' },
+      { label: 'CCS 1', value: 'CCS 1' },
+      { label: 'CCS 2', value: 'CCS 2' },
+      { label: 'GB/T', value: 'GB/T' },
+      { label: 'Tipo 1', value: 'Tipo 1' },
+      { label: 'Tipo 2', value: 'Tipo 2' }
+  ]);
+
   const auth = getAuth();
   const user = auth.currentUser;
   return (
@@ -37,18 +67,29 @@ export default function Travel() {
           value={origem}
           onChangeText={value => setOrigem(value)}
         />
-        <Text style={styles.text}>Destino final</Text>
+        <Text style={styles.text}>Destino</Text>
         <TextInput
           style={styles.input}
           value={destino}
           onChangeText={value =>  setDestino(value)}
         />
         <Text style={styles.text}>Veículo</Text>
-        <TextInput
-          style={styles.input}
-          value={veiculo}
-          onChangeText={value =>  setVeiculo(value)}
-        />
+        <View>
+                        <DropDownPicker
+                            style={styles.dropdown}
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                            placeholder="Selecione os plugues compatíveis"
+                            placeholderStyle={styles.placeholderStyles}
+                            multiple={true}
+                            mode="BADGE"
+                            badgeDotColors={["#e76f51"]}
+                        />
+                    </View>
         <MapView
           style={styles.map}
           provider={MapView.PROVIDER_GOOGLE}
@@ -83,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000'
   },
   map: {
-    height: '60%',
+    height: '55%',
     width: '100%',
     alignSelf: 'center',
     justifyContent: 'center',
@@ -138,5 +179,21 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderRadius: 5,
     marginTop: 2,
-  }
+  },
+  dropdown: {
+    backgroundColor: '#FFFFFF',
+    height: 50,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    marginBottom: 12,
+    borderRadius: 5,
+    marginTop: 1,
+},
+placeholderStyles: {
+    color: "#515151",
+    textAlign: 'center',
+    fontSize: 14
+},
 })

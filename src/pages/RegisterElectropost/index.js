@@ -273,5 +273,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 14
     },
-
 })

@@ -46,7 +46,7 @@ export default function Vehicles() {
     if (user.id = docSnap.id) {
       global.texto = "Veículos cadastrados!"
       setCarro(docSnap.data());
-      console.log(docSnap.data().plugues[0])
+      console.log(docSnap.data().plugues)
       console.log("mandou tudo")
     } else {
       global.texto = "Nenhum veículo cadastrado!"
@@ -107,7 +107,7 @@ export default function Vehicles() {
               <TextInput
                 style={
                   styles.input2}
-                value={carro.plugues[0]}
+                value={carro.plugues}
                 editable={false}
                 selectTextOnFocus={false}
               //onChangeText={value => setCarro({ ...carro, plugues: value })}
