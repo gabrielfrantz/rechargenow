@@ -11,7 +11,18 @@ export default function Vehicles() {
 
   useEffect(() => {
     global.texto = "Nenhum veículo cadastrado!"
-    carregar()
+    const fetchData = async () => {
+      const docSnap = await getDoc(doc(db, "user", user.id));
+      if (user.id = docSnap.id) {
+        global.texto = "Veículos cadastrados!"
+        setCarro(docSnap.data().carro);
+        setPlugues(docSnap.data().carro.plugues[0]);
+      } else {
+        global.texto = "Nenhum veículo cadastrado!"
+      }
+    }
+    fetchData()
+
   }, [])
 
   const [register, setRegister] = useState(false);
@@ -38,17 +49,6 @@ export default function Vehicles() {
 
   const [carro, setCarro] = useState('')
   const [plugues, setPlugues] = useState('')
-
-  async function carregar() {
-    const docSnap = await getDoc(doc(db, "user", user.id));
-    if (user.id = docSnap.id) {
-      global.texto = "Veículos cadastrados!"
-      setCarro(docSnap.data().carro);
-      setPlugues(docSnap.data().carro.plugues[0]);
-    } else {
-      global.texto = "Nenhum veículo cadastrado!"
-    }
-  }
 
   return (
     <View style={styles.container}>
