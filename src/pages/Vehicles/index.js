@@ -9,10 +9,8 @@ import DropDownPicker from 'react-native-dropdown-picker'
 
 export default function Vehicles() {
 
-
   useEffect(() => {
     global.texto = "Nenhum veículo cadastrado!"
-    console.log("entrou effect veiculos")
     carregar()
   }, [])
 
@@ -30,24 +28,23 @@ export default function Vehicles() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(['Tipo 2']);
   const [items, setItems] = useState([
-      { label: 'CHAdeMO', value: 'CHAdeMO' },
-      { label: 'CCS 1', value: 'CCS 1' },
-      { label: 'CCS 2', value: 'CCS 2' },
-      { label: 'GB/T', value: 'GB/T' },
-      { label: 'Tipo 1', value: 'Tipo 1' },
-      { label: 'Tipo 2', value: 'Tipo 2' }
+    { label: 'CHAdeMO', value: 'CHAdeMO' },
+    { label: 'CCS 1', value: 'CCS 1' },
+    { label: 'CCS 2', value: 'CCS 2' },
+    { label: 'GB/T', value: 'GB/T' },
+    { label: 'Tipo 1', value: 'Tipo 1' },
+    { label: 'Tipo 2', value: 'Tipo 2' }
   ]);
 
   const [carro, setCarro] = useState('')
+  const [plugues, setPlugues] = useState('')
 
   async function carregar() {
-    console.log("carregar veiculos")
-    const docSnap = await getDoc(doc(db, "vehicles", user.id));
+    const docSnap = await getDoc(doc(db, "user", user.id));
     if (user.id = docSnap.id) {
       global.texto = "Veículos cadastrados!"
-      setCarro(docSnap.data());
-      console.log(docSnap.data().plugues)
-      console.log("mandou tudo")
+      setCarro(docSnap.data().carro);
+      setPlugues(docSnap.data().carro.plugues[0]);
     } else {
       global.texto = "Nenhum veículo cadastrado!"
     }
@@ -107,7 +104,7 @@ export default function Vehicles() {
               <TextInput
                 style={
                   styles.input2}
-                value={carro.plugues}
+                value={plugues}
                 editable={false}
                 selectTextOnFocus={false}
               //onChangeText={value => setCarro({ ...carro, plugues: value })}

@@ -20,10 +20,10 @@ export default function RegisterVehicles({ change }) {
     const user = auth.currentUser;
 
     const [marca, setMarca] = useState('')
+    const [carro, setCarro] = useState('')
     const [modelo, setModelo] = useState('')
     const [placa, setPlaca] = useState('')
     const [bateria, setBateria] = useState('')
-
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(['Tipo 2']);
     const [items, setItems] = useState([
@@ -45,14 +45,15 @@ export default function RegisterVehicles({ change }) {
         console.log(bateria)
         console.log(tipoVeiculo)
         console.log("Veículo cadastrado com sucesso! ")
-        setDoc(doc(db, "vehicles", user.uid), {
-            marca: marca,
-            modelo: modelo,
-            plugues: value,
-            placa: placa,
-            bateria: bateria,
-            veiculo: tipoVeiculo
-
+        updateDoc(doc(db, "user", user.uid), {
+            carro: {
+                marca: marca,
+                modelo: modelo,
+                plugues: value,
+                placa: placa,
+                bateria: bateria,
+                veiculo: tipoVeiculo
+            }
         })
     }
 

@@ -17,50 +17,23 @@ import DropDownPicker from 'react-native-dropdown-picker'
 export default function Travel() {
 
   function limpar() {
-    setOrigem({ origem: '' });
-    setDestino({ destino: '' });
-    setVeiculo({ veiculo: '' });
-  }
-
-  const [origem, setOrigem] = useState('')
-  const [destino, setDestino] = useState('')
-  const [veiculo, setVeiculo] = useState('')
-
-  useEffect(() => {
-    console.log("entrou effect travel-veiculos")
-    carregar()
-  }, [])
-
-  async function carregar() {
-    console.log("carregar veiculos")
-    const docSnap = await getDoc(doc(db, "vehicles", user.id));
-    if (user.id = docSnap.id) {
-      setCarro(docSnap.data());
-      console.log(docSnap.data().plugues[0])
-      console.log("mandou tudo")
-    } else {
-      global.texto = "Nenhum veículo cadastrado!"
-    }
+    setOrigem('');
+    setDestino('')
   }
 
   DropDownPicker.setListMode("SCROLLVIEW");
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(['Tipo 2']);
-  const [items, setItems] = useState([
-      { label: 'CHAdeMO', value: 'CHAdeMO' },
-      { label: 'CCS 1', value: 'CCS 1' },
-      { label: 'CCS 2', value: 'CCS 2' },
-      { label: 'GB/T', value: 'GB/T' },
-      { label: 'Tipo 1', value: 'Tipo 1' },
-      { label: 'Tipo 2', value: 'Tipo 2' }
-  ]);
+  const [value, setValue] = useState(['']);
+  const [items, setItems] = useState([{ label: 'XC 60', value: 'XC 60' }]);
+  const [origem, setOrigem] = useState('')
+  const [destino, setDestino] = useState('')
 
   const auth = getAuth();
   const user = auth.currentUser;
+
   return (
     <View style={styles.container}>
       <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-
         <Text style={styles.text}>Origem</Text>
         <TextInput
           style={styles.input}
@@ -71,25 +44,25 @@ export default function Travel() {
         <TextInput
           style={styles.input}
           value={destino}
-          onChangeText={value =>  setDestino(value)}
+          onChangeText={value => setDestino(value)}
         />
         <Text style={styles.text}>Veículo</Text>
         <View>
-                        <DropDownPicker
-                            style={styles.dropdown}
-                            open={open}
-                            value={value}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setValue}
-                            setItems={setItems}
-                            placeholder="Selecione os plugues compatíveis"
-                            placeholderStyle={styles.placeholderStyles}
-                            multiple={true}
-                            mode="BADGE"
-                            badgeDotColors={["#e76f51"]}
-                        />
-                    </View>
+          <DropDownPicker
+            style={styles.dropdown}
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            placeholder="Selecione um veículo"
+            placeholderStyle={styles.placeholderStyles}
+            multiple={true}
+            mode="BADGE"
+            badgeDotColors={["#e76f51"]}
+          />
+        </View>
         <MapView
           style={styles.map}
           provider={MapView.PROVIDER_GOOGLE}
@@ -190,10 +163,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderRadius: 5,
     marginTop: 1,
-},
-placeholderStyles: {
+  },
+  placeholderStyles: {
     color: "#515151",
     textAlign: 'center',
     fontSize: 14
-},
+  },
 })

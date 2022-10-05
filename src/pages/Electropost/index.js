@@ -1,10 +1,8 @@
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { useNavigation } from '@react-navigation/native'
 
 export default function Electropost() {
-    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
