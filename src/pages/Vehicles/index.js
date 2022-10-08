@@ -9,25 +9,22 @@ import DropDownPicker from 'react-native-dropdown-picker'
 
 export default function Vehicles() {
 
-  useEffect(() => {
-    global.texto = "Nenhum veículo cadastrado!"
-    const fetchData = async () => {
-      const docSnap = await getDoc(doc(db, "user", user.id));
-      if (user.id = docSnap.id) {
-        global.texto = "Veículos cadastrados!"
-        setCarro(docSnap.data().carro);
-        setPlugues(docSnap.data().carro.plugues[0]);
-      } else {
-        global.texto = "Nenhum veículo cadastrado!"
-      }
+  async function carregar() {
+    const docSnap = await getDoc(doc(db, "user", user.id));
+    if (user.id = docSnap.id) {
+      setCarro(docSnap.data().carro);
+      setPlugues(docSnap.data().carro.plugues[0]);
     }
-    fetchData()
+  }
 
+  useEffect(() => {
+    carregar()
   }, [])
 
   const [register, setRegister] = useState(false);
   const [showElement, setShowElement] = useState(false)
   const showOrHide = () => setShowElement(true)
+  global.texto = "Veículos cadastrados!"
 
   const auth = getAuth();
   const user = auth.currentUser;

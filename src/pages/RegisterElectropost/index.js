@@ -22,13 +22,22 @@ export default function RegisterElectropost({ change }) {
     const [bairro, setBairro] = useState('')
     const [cidade, setCidade] = useState('')
     const [uf, setUF] = useState('')
-    const [tipo_plugues, setTipo_plugues] = useState('')
     const [potencia, setPotencia] = useState('')
     const [contato, setContato] = useState('')
+    const [tipo_plugues, setTipo_plugues] = useState('')
 
-    var tipoVeiculo
+    function limpar() {
+        setLocal('')
+        setEndereco('')
+        setNumero('')
+        setBairro('')
+        setCidade('')
+        setUF('')
+        setPotencia('')
+        setContato('')
+      }
 
-    function newVehicle() {
+    function newElectropost() {
         console.log(local)
         console.log(endereco)
         console.log(numero)
@@ -42,14 +51,15 @@ export default function RegisterElectropost({ change }) {
         const docRef = addDoc(collection(db, "electropost"), {
             local: local,
             endereco: endereco,
-            endereco: numero,
-            endereco: bairro,
-            endereco: cidade,
-            endereco: uf,
-            tipo_plugues: tipo_plugues,
+            numero: numero,
+            bairro: bairro,
+            cidade: cidade,
+            uf: uf,
+            tipo_plugues: value,
             potencia: potencia,
             contato: contato
         })
+        limpar()
     }
 
     const [open, setOpen] = useState(false);
@@ -149,11 +159,11 @@ export default function RegisterElectropost({ change }) {
                         onChangeText={value => setContato(value)}
                     />
                     <Text style={styles.text}>(*) Preenchimento obrigatório</Text>
-                    <TouchableOpacity style={styles.button} onPress={() => newVehicle()}>
+                    <TouchableOpacity style={styles.button} onPress={() => newElectropost()}>
                         <Text style={styles.buttonText}>Salvar</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonGoogle} onPress={change}>
-                        <Text style={styles.buttonText}>Voltar</Text>
+                        <Text style={styles.buttonText}>Cancelar</Text>
                     </TouchableOpacity>
                 </ScrollView>
             </Animatable.View>

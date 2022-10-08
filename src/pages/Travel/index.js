@@ -17,7 +17,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 export default function Travel() {
 
   function limpar() {
-    setOrigem('');
+    setOrigem('')
     setDestino('')
   }
 

@@ -71,6 +71,7 @@ export default function User() {
 
   function limpar() {
     setPassword('');
+    setPasswordConfirm('');
   }
 
   useEffect(() => {

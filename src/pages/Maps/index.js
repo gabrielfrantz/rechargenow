@@ -27,8 +27,9 @@ export default function Maps() {
     const [currentLatitude, setCurrentLatitude] = useState('');
     const [currentLongitude, setCurrentLongitude] = useState('');
     const [watchID, setWatchID] = useState(0);
+    const [location, setLocation] = useState(null);
 
-    const callLocation = () => {
+    /*const permissao = () => {
         if (Platform.OS === 'ios') {
             getLocation();
         } else {
@@ -41,51 +42,46 @@ export default function Maps() {
                         buttonPositive: "Permitir",
                         buttonNegative: "Cancelar"
                     }
-                );
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    getLocation();
-                } else {
-                    alert('Permissão de localização negada');
-                }
-            };
+                )
+            }
             requestLocationPermission();
         }
-    }
+    }*/
+
+    useEffect(() => {
+        (async () => {
+            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 50000, maximumAge: 1000 });
+            console.log(location)
+            const latitude = location.coords.latitude
+            const longitude = location.coords.longitude
+            setCurrentLatitude(latitude);
+            setCurrentLongitude(longitude);
+            console.log(currentLatitude)
+            console.log(currentLongitude)
+            getLocation()
+            getFilter()
+        })();
+    }, []);
 
     const getLocation = () => {
-        console.log("entrou getlocation")
-        Geolocation.getCurrentPosition(
-            ({ position }) => {
-                const currentLatitude = JSON.stringify(position.coords.latitude);
-                const currentLongitude = JSON.stringify(position.coords.longitude);
-                setCurrentLatitude(currentLatitude);
-                setCurrentLongitude(currentLongitude);
-            },
-            (error) => alert(error.message),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        );
-        const watchID = Geolocation.watchPosition((position) => {
-            const currentLatitude = JSON.stringify(position.coords.latitude);
-            const currentLongitude = JSON.stringify(position.coords.longitude);
-            setCurrentLatitude(currentLatitude);
-            setCurrentLongitude(currentLongitude);
-        });
-        setWatchID(watchID);
-    }
-
-    const clearLocation = () => {
-        Geolocation.clearWatch(watchID);
+        (async () => {
+            const watchID = await Location.watchPositionAsync({})
+            setWatchID(watchID);
+            console.log(watchID)
+        })()
     }
 
     function eletropostos() {
-        console.log("entrou eletropostos")
-
+        console.log("lista os eletropostos")
     }
 
-    useEffect(() => {
-        console.log("Entrou Effect")
-        callLocation()
-    }, [])
+    const getFilter = () => {
+        (async () => {
+            const electropostsRef = collection(db, "electropost");
+            const q = query(electropostsRef, where("local", "==", true));
+            console.log(q)
+        })()
+    }
 
     return (
         <View style={styles.container}>
@@ -209,7 +205,7 @@ const styles = StyleSheet.create({
         width: 25,
         resizeMode: 'stretch'
     },
-    buttonImagemIconStyle2: {        
+    buttonImagemIconStyle2: {
         margin: 1,
         height: 30,
         width: 30,
