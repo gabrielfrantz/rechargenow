@@ -48,26 +48,28 @@ export default function Maps() {
         }
     }*/
 
+    async function getPosition() {
+        let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 50000, maximumAge: 1000 });
+        //console.log(location)
+        const latitude = location.coords.latitude
+        const longitude = location.coords.longitude
+        setCurrentLatitude(latitude);
+        setCurrentLongitude(longitude);
+        console.log(currentLatitude)
+        console.log(currentLongitude)
+        getLocation()
+        //getFilter()
+    }
+
     useEffect(() => {
-        (async () => {
-            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 50000, maximumAge: 1000 });
-            console.log(location)
-            const latitude = location.coords.latitude
-            const longitude = location.coords.longitude
-            setCurrentLatitude(latitude);
-            setCurrentLongitude(longitude);
-            console.log(currentLatitude)
-            console.log(currentLongitude)
-            getLocation()
-            getFilter()
-        })();
+        getPosition()
     }, []);
 
     const getLocation = () => {
         (async () => {
             const watchID = await Location.watchPositionAsync({})
             setWatchID(watchID);
-            console.log(watchID)
+            //console.log(watchID)
         })()
     }
 
