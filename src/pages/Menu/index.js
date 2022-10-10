@@ -80,6 +80,8 @@ export default function Menu() {
                                 fontSize: 9,
                                 fontWeight: "bold",
                             },
+                            //tabBarInactiveTintColor: '#E0DCDC',
+                            //tabBarActiveTintColor: '#E0DCDC'
                         }}
                     />
                     <Tab.Screen

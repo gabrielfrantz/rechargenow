@@ -60,7 +60,7 @@ export default function User() {
 
   async function carregar() {
     const docSnap = await getDoc(doc(db, "user", user.uid));
-    if (user.id = docSnap.id) {
+    if (user.uid = docSnap.id) {
       //console.log("Uid", docSnap.id);
       setUsuario(docSnap.data());
       //console.log("Nome:", docSnap.data().nome);

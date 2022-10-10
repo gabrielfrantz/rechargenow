@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, PermissionsAndroid, Platform } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
 import { Ionicons } from 'react-native-ionicons'
@@ -14,20 +14,40 @@ import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, Docu
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 
 export default function Maps() {
+    const auth = getAuth();
+    const user = auth.currentUser;
     const navigation = useNavigation();
+    const [currentLatitude, setCurrentLatitude] = useState(-29.6015984);
+    const [currentLongitude, setCurrentLongitude] = useState(-52.1839037);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [watchID, setWatchID] = useState(0);
+    const [location, setLocation] = useState(null);
     const [register, setRegister] = useState(false);
-
     const change = () => {
         setRegister(false);
     }
+    const getLocation = () => {
+        (async () => {
+            const watchID = await Location.watchPositionAsync({})
+            setWatchID(watchID);
+            //console.log(watchID)
+        })()
+    }
 
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const getFilter = () => {
+        (async () => {
+            const electropostsRef = collection(db, "electropost");
+            const q = query(electropostsRef, where("local", "==", true));
+            console.log(q)
+        })()
+    }
 
-    const [currentLatitude, setCurrentLatitude] = useState('');
-    const [currentLongitude, setCurrentLongitude] = useState('');
-    const [watchID, setWatchID] = useState(0);
-    const [location, setLocation] = useState(null);
+    //const clientesFiltrados = Array.isArray(clientes) ? carros.filter((cliente) => cliente.nome.toLowerCase().includes(lowerBusca)) : []
+
+    function eletropostos() {
+        console.log("lista os eletropostos");
+        setModalVisible(true);
+    }
 
     /*const permissao = () => {
         if (Platform.OS === 'ios') {
@@ -55,8 +75,8 @@ export default function Maps() {
         const longitude = location.coords.longitude
         setCurrentLatitude(latitude);
         setCurrentLongitude(longitude);
-        console.log(currentLatitude)
-        console.log(currentLongitude)
+        console.log(latitude)
+        console.log(longitude)
         getLocation()
         //getFilter()
     }
@@ -64,26 +84,6 @@ export default function Maps() {
     useEffect(() => {
         getPosition()
     }, []);
-
-    const getLocation = () => {
-        (async () => {
-            const watchID = await Location.watchPositionAsync({})
-            setWatchID(watchID);
-            //console.log(watchID)
-        })()
-    }
-
-    function eletropostos() {
-        console.log("lista os eletropostos")
-    }
-
-    const getFilter = () => {
-        (async () => {
-            const electropostsRef = collection(db, "electropost");
-            const q = query(electropostsRef, where("local", "==", true));
-            console.log(q)
-        })()
-    }
 
     return (
         <View style={styles.container}>
@@ -104,15 +104,15 @@ export default function Maps() {
                         style={styles.map}
                         provider={MapView.PROVIDER_GOOGLE}
                         region={{
-                            latitude: -29.6015984,
-                            longitude: -52.1839037,
+                            latitude: currentLatitude,
+                            longitude: currentLongitude,
                             latitudeDelta: 0.015,
                             longitudeDelta: 0.015,
                         }}
                     >
                         <Marker coordinate={{
-                            latitude: -29.6015984,
-                            longitude: -52.1839037,
+                            latitude: currentLatitude,
+                            longitude: currentLongitude
                         }}
                             image={require('../../assets/marker3.png')}
                         />
@@ -127,6 +127,19 @@ export default function Maps() {
                         <View style={styles.buttonIconSeparator} />
                         <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
                     </TouchableOpacity>
+                    <View style={styles.centeredView}>
+                    <Modal
+                            animationType="slide"
+                            transparent={false}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                //Alert.alert("Modal has been closed.");
+                                setModalVisible(!modalVisible);
+                            }}
+                        >
+                        <Text style={styles.buttonText}>Localizar</Text>
+                    </Modal>
+                    </View>
                 </Animatable.View>
             )}
         </View>
@@ -137,6 +150,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFFFFF',
+    },
+    centeredView: {
+        height: 25,
+        width: 25,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 100
     },
     map: {
         height: '79%',
