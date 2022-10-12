@@ -57,7 +57,7 @@ export default function Vehicles() {
           <ScrollView>
             <Text style={styles.text2}>{global.texto}</Text>
             <View style={styles.containerForm2} >
-              <Image style={styles.buttonImagemIconStyle} source={require('../../assets/car.png')} />
+              <Image style={styles.buttonImagemIconStyle} source={require('../../assets/carroEletrico.png')} />
               <TextInput
                 style={
                   styles.input}
@@ -154,8 +154,9 @@ const styles = StyleSheet.create({
   text2: {
     color: '#515151',
     textAlign: 'center',
-    fontSize: 16,
-    marginBottom: 10
+    fontSize: 20,
+    marginBottom: 10,
+    marginTop: 30
   },
   text3: {
     color: '#515151',
@@ -171,8 +172,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20
+    marginTop: 30,
   },
   buttonText2: {
     fontSize: 14,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
     marginBottom: 5,
-    marginTop: 5
+    marginTop: 20
   },
   button3: {
     backgroundColor: '#FFFFFF',
@@ -201,8 +201,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    marginBottom: 10,
-    marginTop: 5
+    marginBottom: 20,
+    marginTop: 10
   },
   buttonText: {
     fontSize: 20,
@@ -213,12 +213,12 @@ const styles = StyleSheet.create({
   },
   buttonImagemIconStyle: {
     margin: 5,
-    height: 40,
-    width: 40,
+    height: 100,
+    width: 100,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    resizeMode: 'stretch'
+    marginTop: 15
   },
   input: {
     color: '#515151',

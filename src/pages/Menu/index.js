@@ -1,5 +1,5 @@
 import React from 'react'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
@@ -12,36 +12,20 @@ import Electropost from '../../pages/Electropost'
 import RegisterElectropost from '../../pages/RegisterElectropost'
 import Recharge from '../../pages/Recharge'
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function Menu() {
     return (
         <View style={styles.container}>
-            <View style={styles.containerLogo}>
-                <Animatable.Image
-                    animation="flipInX"
-                    source={require('../../assets/logo.png')}
-                    style={{ width: '70%' }}
-                    resizeMode="contain"
-                />
-            </View>
-            <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
+            <Animatable.View anima tion="fadeInUp" delay={500} style={styles.containerForm}>
                 <Tab.Navigator
                     screenOptions={{
-                        style: {
-                            backgroundColor: '#FFFFFF',
-                            borderTopColor: 'transparent',
-                        },
-                        activeTintColor: '#000000',
-                        tabStyle: {
-                            paddingBottom: 10,
-                            paddingTop: 10,
-                            headerLeft: null,
-                        }
+                        tabBarStyle: { backgroundColor: '#fff' },
+                        tabBarActiveTintColor: '#000',
                     }}
                 >
                     <Tab.Screen
-                        name="  Estações"
+                        name=" Estações"
                         component={Maps}
                         options={{
                             tabBarIcon: () => (
@@ -49,13 +33,14 @@ export default function Menu() {
                             ),
                             headerLeft: null,
                             tabBarLabelStyle: {
-                                fontSize: 9,
+                                fontSize: 11,
                                 fontWeight: "bold",
-                            }
+                            },
+                            headerShown: false
                         }}
                     />
                     <Tab.Screen
-                        name="  Veículos"
+                        name="Veículos"
                         component={Vehicles}
                         options={{
                             tabBarIcon: () => (
@@ -63,13 +48,14 @@ export default function Menu() {
                             ),
                             headerLeft: null,
                             tabBarLabelStyle: {
-                                fontSize: 9,
+                                fontSize: 11,
                                 fontWeight: "bold",
-                            }
+                            },
+                            headerShown: false
                         }}
                     />
                     <Tab.Screen
-                        name=" Carregar"
+                        name="Carregar"
                         component={Recharge}
                         options={{
                             tabBarIcon: () => (
@@ -77,15 +63,14 @@ export default function Menu() {
                             ),
                             headerLeft: null,
                             tabBarLabelStyle: {
-                                fontSize: 9,
+                                fontSize: 11,
                                 fontWeight: "bold",
                             },
-                            //tabBarInactiveTintColor: '#E0DCDC',
-                            //tabBarActiveTintColor: '#E0DCDC'
+                            headerShown: false
                         }}
                     />
                     <Tab.Screen
-                        name="   Viagens"
+                        name="Viagens"
                         component={Travel}
                         options={{
                             tabBarIcon: () => (
@@ -93,13 +78,14 @@ export default function Menu() {
                             ),
                             headerLeft: null,
                             tabBarLabelStyle: {
-                                fontSize: 9,
+                                fontSize: 11,
                                 fontWeight: "bold",
-                            }
+                            },
+                            headerShown: false
                         }}
                     />
                     <Tab.Screen
-                        name="   Perfil"
+                        name="Perfil"
                         component={User}
                         options={{
                             tabBarIcon: () => (
@@ -107,9 +93,10 @@ export default function Menu() {
                             ),
                             headerLeft: null,
                             tabBarLabelStyle: {
-                                fontSize: 9,
+                                fontSize: 11,
                                 fontWeight: "bold",
-                            }
+                            },
+                            headerShown: false
                         }}
                     />
                 </Tab.Navigator>
@@ -123,14 +110,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#000000'
     },
-    containerLogo: {
-        flex: 1,
-        backgroundColor: '#000000',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     containerForm: {
-        flex: 7,
+        flex: 4,
         backgroundColor: '#FFFFFF',
     },
     text: {
@@ -140,14 +121,5 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    iconTabRound: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        marginBottom: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
     }
 })

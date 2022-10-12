@@ -130,23 +130,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000'
   },
-  containerLogo: {
-    flex: 1,
-    backgroundColor: '#000000',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   containerForm: {
     flex: 5,
     backgroundColor: '#FFFFFF',
     paddingStart: '5%',
     paddingTop: '10%',
-    paddingEnd: '5%'
+    paddingEnd: '5%',
+    height: '60%'
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 30,
+    marginTop: 50,
     textAlign: 'center'
   },
   text: {

@@ -192,14 +192,13 @@ const styles = StyleSheet.create({
         padding: '20',
     },
     containerForm: {
-        flex: 1,
+        flex: 5,
         backgroundColor: '#FFFFFF',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
         paddingStart: '5%',
-        paddingTop: '3%',
-        paddingEnd: '5%'
-    },
+        paddingTop: '10%',
+        paddingEnd: '5%',
+        height: '60%'
+      },
     text: {
         color: '#515151',
         textAlign: 'center',

@@ -17,7 +17,6 @@ export default function Login() {
         await signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user
-                console.log("Login efetuado com sucesso! ")
                 navigation.navigate('Menu')
             })
             .catch(error => console.log(error.message))

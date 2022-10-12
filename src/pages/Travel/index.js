@@ -108,9 +108,9 @@ const styles = StyleSheet.create({
     flex: 5,
     backgroundColor: '#FFFFFF',
     paddingStart: '5%',
-    paddingTop: '2%',
+    paddingTop: '10%',
     paddingEnd: '5%',
-    height: '50%'
+    height: '60%'
   },
   text: {
     color: '#515151',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 5
+    marginTop: 15
   },
   buttonSecond: {
     backgroundColor: '#E0DCDC',

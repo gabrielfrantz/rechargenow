@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform } from 'react-native'
+import Carousel from 'react-native-snap-carousel'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform, Animated } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
 import { Ionicons } from 'react-native-ionicons'
@@ -30,7 +31,6 @@ export default function Maps() {
         (async () => {
             const watchID = await Location.watchPositionAsync({})
             setWatchID(watchID);
-            //console.log(watchID)
         })()
     }
 
@@ -41,8 +41,6 @@ export default function Maps() {
             console.log(q)
         })()
     }
-
-    //const clientesFiltrados = Array.isArray(clientes) ? carros.filter((cliente) => cliente.nome.toLowerCase().includes(lowerBusca)) : []
 
     function eletropostos() {
         console.log("lista os eletropostos");
@@ -68,6 +66,16 @@ export default function Maps() {
         }
     }*/
 
+    function PlaceCard({ }) {
+        return <View style={styles.card}>
+            <View style={styles.row}>
+                <Text style={styles.buttonText}>Você está vendo algum Card aqui?</Text>
+                <View style={styles.buttonIconSeparator} />
+                <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
+            </View>
+        </View>
+    }
+
     async function getPosition() {
         let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 50000, maximumAge: 1000 });
         //console.log(location)
@@ -89,17 +97,8 @@ export default function Maps() {
         <View style={styles.container}>
             {register ? (
                 <RegisterElectropost change={change} />
-                //<Electropost change={change} />
             ) : (
                 <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
-                    <View style={styles.cabecalho}>
-                        <TextInput
-                            style={
-                                styles.input}
-                            placeholder=" Pesquisar endereço"
-                        />
-                        <Image style={styles.buttonImagemIconStyle2} source={require('../../assets/pesquisa.png')} />
-                    </View>
                     <MapView
                         style={styles.map}
                         provider={MapView.PROVIDER_GOOGLE}
@@ -117,29 +116,31 @@ export default function Maps() {
                             image={require('../../assets/marker3.png')}
                         />
                     </MapView>
+
+                    <Animated.ScrollView
+                        horizontal={true}
+                        scrollEventThrottle={1}
+                        showsHorizontalScrollIndicator={false}
+                        style={styles.ScrollView}
+                    >
+                        <View style={styles.card}>
+                            <Image
+                                source={require('../../assets/logo.png')}
+                                style={styles.cardImage}
+                                resizeMode='cover'
+                            />
+                            <View style={styles.textContent}>
+                                <Text numberOfLines={1} style={styles.cardTitle}>Titulo do CARD</Text>
+                                <Text numberOfLines={1} style={styles.cardDescription}>Descrição do CARD</Text>
+                            </View>
+                        </View>
+                    </Animated.ScrollView>
                     <TouchableOpacity style={styles.button} onPress={() => eletropostos()}>
                         <Text style={styles.buttonText}>Localizar estações mais próximas</Text>
-                        <View style={styles.buttonIconSeparator} />
-                        <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonSecond} onPress={() => setRegister(true)}>
                         <Text style={styles.buttonText}>Cadastrar nova estação de recarga</Text>
-                        <View style={styles.buttonIconSeparator} />
-                        <Image style={styles.buttonImagemIconStyle} source={require('../../assets/add.png')} />
                     </TouchableOpacity>
-                    <View style={styles.centeredView}>
-                    <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={modalVisible}
-                            onRequestClose={() => {
-                                //Alert.alert("Modal has been closed.");
-                                setModalVisible(!modalVisible);
-                            }}
-                        >
-                        <Text style={styles.buttonText}>Localizar</Text>
-                    </Modal>
-                    </View>
                 </Animatable.View>
             )}
         </View>
@@ -149,15 +150,7 @@ export default function Maps() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
-    },
-    centeredView: {
-        height: 25,
-        width: 25,
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 100
+        backgroundColor: '#000000',
     },
     map: {
         height: '79%',
@@ -165,12 +158,47 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative',
+    },
+    card: {
+        // padding: 10,
+        elevation: 2,
+        backgroundColor: "#FFF",
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowRadius: 5,
+        shadowOpacity: 0.5,
+        shadowOffset: { width: 0, height: 3 },
+        height: 100,
+        width: 100,
+        overflow: "hidden",
+    },
+    cardImage: {
+        flex: 3,
+        width: "100%",
+        height: "100%",
+        alignSelf: "center",
+    },
+    textContent: {
+        flex: 2,
+        padding: 10,
+    },
+    cardtitle: {
+        fontSize: 12,
+        // marginTop: 5,
+        fontWeight: "bold",
+    },
+    cardDescription: {
+        fontSize: 12,
+        color: "#444",
     },
     containerForm: {
         flex: 5,
         backgroundColor: '#FFFFFF',
         paddingStart: '5%',
-        paddingTop: '2%',
+        paddingTop: '10%',
         paddingEnd: '5%',
         height: '60%'
     },
@@ -197,6 +225,7 @@ const styles = StyleSheet.create({
         paddingVertical: 2,
         flexDirection: 'row',
         width: '100%',
+        height: '7%',
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
@@ -209,6 +238,7 @@ const styles = StyleSheet.create({
         paddingVertical: 2,
         flexDirection: 'row',
         width: '100%',
+        height: '7%',
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',

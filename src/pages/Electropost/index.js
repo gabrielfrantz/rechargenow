@@ -38,13 +38,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#000000'
     },
     containerForm: {
-        flex: 2,
+        flex: 5,
         backgroundColor: '#FFFFFF',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
         paddingStart: '5%',
         paddingTop: '10%',
-        paddingEnd: '5%'
+        paddingEnd: '5%',
+        height: '60%'
     },
     title: {
         fontSize: 24,
