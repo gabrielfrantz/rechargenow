@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Carousel from 'react-native-snap-carousel'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform, Animated } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform, Animated, ScrollView } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
 import { Ionicons } from 'react-native-ionicons'
@@ -13,17 +13,28 @@ import * as Location from 'expo-location'
 import { auth, db } from '../../config/firebase'
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 
 export default function Maps() {
     const auth = getAuth();
     const user = auth.currentUser;
     const navigation = useNavigation();
-    const [currentLatitude, setCurrentLatitude] = useState(-29.6015984);
-    const [currentLongitude, setCurrentLongitude] = useState(-52.1839037);
+    const [currentLatitude, setCurrentLatitude] = useState(37.4214938);
+    const [currentLongitude, setCurrentLongitude] = useState(-122.083922);
+    const [searchLocation, setSearchLocation] = useState('')
     const [modalVisible, setModalVisible] = useState(false);
     const [watchID, setWatchID] = useState(0);
     const [location, setLocation] = useState(null);
     const [register, setRegister] = useState(false);
+    const [regionCoords, setRegion] = useState({ lat: 37.4214938, lng: -122.083922 });
+    const [marker, setMarker] = useState({ lat: 37.4214938, lng: -122.083922 });
+
+    const onPress = (data, details) => {
+        setRegion(details.geometry.location);
+        setMarker(details.geometry.location);
+      };
+
     const change = () => {
         setRegister(false);
     }
@@ -34,59 +45,28 @@ export default function Maps() {
         })()
     }
 
-    const getFilter = () => {
-        (async () => {
-            const electropostsRef = collection(db, "electropost");
-            const q = query(electropostsRef, where("local", "==", true));
-            console.log(q)
-        })()
-    }
-
     function eletropostos() {
         console.log("lista os eletropostos");
         setModalVisible(true);
     }
 
-    /*const permissao = () => {
-        if (Platform.OS === 'ios') {
-            getLocation();
-        } else {
-            const requestLocationPermission = async () => {
-                const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                    {
-                        title: "Permissão de acesso à localização",
-                        message: "Este aplicativo precisa ter acesso a sua localização",
-                        buttonPositive: "Permitir",
-                        buttonNegative: "Cancelar"
-                    }
-                )
-            }
-            requestLocationPermission();
-        }
-    }*/
-
-    function PlaceCard({ }) {
-        return <View style={styles.card}>
-            <View style={styles.row}>
-                <Text style={styles.buttonText}>Você está vendo algum Card aqui?</Text>
-                <View style={styles.buttonIconSeparator} />
-                <Image style={styles.buttonImagemIconStyle} source={require('../../assets/menuEstacoesProximas.png')} />
-            </View>
-        </View>
-    }
-
     async function getPosition() {
         let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 50000, maximumAge: 1000 });
-        //console.log(location)
         const latitude = location.coords.latitude
         const longitude = location.coords.longitude
+        setRegion({
+            latitude: latitude,
+            longitude: longitude
+        })
+        setMarker({
+            latitude: latitude,
+            longitude: longitude
+        })
         setCurrentLatitude(latitude);
         setCurrentLongitude(longitude);
-        console.log(latitude)
-        console.log(longitude)
+        console.log(regionCoords)
+        console.log(marker)
         getLocation()
-        //getFilter()
     }
 
     useEffect(() => {
@@ -103,38 +83,38 @@ export default function Maps() {
                         style={styles.map}
                         provider={MapView.PROVIDER_GOOGLE}
                         region={{
-                            latitude: currentLatitude,
-                            longitude: currentLongitude,
+                            latitude: regionCoords.lat,
+                            longitude: regionCoords.lng,
                             latitudeDelta: 0.015,
                             longitudeDelta: 0.015,
                         }}
                     >
                         <Marker coordinate={{
-                            latitude: currentLatitude,
-                            longitude: currentLongitude
+                            latitude: marker.lat,
+                            longitude: marker.lng
                         }}
                             image={require('../../assets/marker3.png')}
                         />
                     </MapView>
+                    <View style={styles.searchBox}>
+                        <GooglePlacesAutocomplete
+                            placeholder='Pesquisar endereço'
+                            query={{
+                                key: 'AIzaSyDXxvmkvJlLP33BSi4upooK7tAVypPeiqQ',
+                                language: 'pt-br',
+                                components: 'country:bra',
+                            }}
+                            GooglePlacesDetailsQuery={{
+                                fields: 'geometry'
+                            }}
+                            enablePoweredByContainer={false}
+                            fetchDetails={true}
+                            styles={{ listView: { height: 100 } }}
+                            onPress={onPress}
 
-                    <Animated.ScrollView
-                        horizontal={true}
-                        scrollEventThrottle={1}
-                        showsHorizontalScrollIndicator={false}
-                        style={styles.ScrollView}
-                    >
-                        <View style={styles.card}>
-                            <Image
-                                source={require('../../assets/logo.png')}
-                                style={styles.cardImage}
-                                resizeMode='cover'
-                            />
-                            <View style={styles.textContent}>
-                                <Text numberOfLines={1} style={styles.cardTitle}>Titulo do CARD</Text>
-                                <Text numberOfLines={1} style={styles.cardDescription}>Descrição do CARD</Text>
-                            </View>
-                        </View>
-                    </Animated.ScrollView>
+                        />
+                        <Image style={styles.buttonImagemIconStyle2} source={require('../../assets/pesquisa.png')} />
+                    </View>
                     <TouchableOpacity style={styles.button} onPress={() => eletropostos()}>
                         <Text style={styles.buttonText}>Localizar estações mais próximas</Text>
                     </TouchableOpacity>
@@ -174,6 +154,21 @@ const styles = StyleSheet.create({
         height: 100,
         width: 100,
         overflow: "hidden",
+    },
+    searchBox: {
+        position: 'absolute',
+        marginTop: Platform.OS === 'ios' ? 40 : 45,
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        width: '90%',
+        alignSelf: 'center',
+        borderRadius: 5,
+        padding: 10,
+        shadowColor: '#ccc',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 10
     },
     cardImage: {
         flex: 3,
@@ -259,7 +254,7 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch'
     },
     buttonImagemIconStyle2: {
-        margin: 1,
+        margin: 10,
         height: 30,
         width: 30,
         resizeMode: 'stretch'
