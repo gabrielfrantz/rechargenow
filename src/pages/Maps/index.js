@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Carousel from 'react-native-snap-carousel'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform, Animated, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform, Animated, ScrollView, Dimensions } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
-import { Card, Title, Paragraph, Button, Avatar } from 'react-native-paper'
 import { Ionicons } from 'react-native-ionicons'
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
@@ -14,9 +12,67 @@ import { auth, db } from '../../config/firebase'
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import StarRating from '../../components/StarRating'
 
+const { width, height } = Dimensions.get("window");
+const CARD_HEIGHT = 220;
+const CARD_WIDTH = width * 0.8;
+const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
+const Images = [
+    { uri: "https://i.imgur.com/sNam9iJ.jpg" },
+    { uri: "https://i.imgur.com/N7rlQYt.jpg" },
+    { uri: "https://i.imgur.com/UDrH0wm.jpg" },
+    { uri: "https://i.imgur.com/Ka8kNST.jpg" }
+]
 
 export default function Maps() {
+    state = {
+        markers: [
+            {
+                coordinate: {
+                    latitude: 37.4224938,
+                    longitude: -122.086922,
+                },
+                title: "Best Place",
+                description: "This is the best place in Portland",
+                image: Images[0],
+            },
+            {
+                coordinate: {
+                    latitude: 37.4224938,
+                    longitude: -122.086922,
+                },
+                title: "Second Best Place",
+                description: "This is the second best place in Portland",
+                image: Images[1],
+            },
+            {
+                coordinate: {
+                    latitude: 37.4224938,
+                    longitude: -122.086922,
+                },
+                title: "Third Best Place",
+                description: "This is the third best place in Portland",
+                image: Images[2],
+            },
+            {
+                coordinate: {
+                    latitude: 37.4224938,
+                    longitude: -122.086922,
+                },
+                title: "Fourth Best Place",
+                description: "This is the fourth best place in Portland",
+                image: Images[3],
+            },
+        ],
+        region: {
+            latitude: 37.4224938,
+            longitude: -122.086922,
+            latitudeDelta: 0.04864195044303443,
+            longitudeDelta: 0.040142817690068,
+        },
+    };
+
     const auth = getAuth();
     const user = auth.currentUser;
     const navigation = useNavigation();
@@ -33,7 +89,7 @@ export default function Maps() {
     const onPress = (data, details) => {
         setRegion(details.geometry.location);
         setMarker(details.geometry.location);
-      };
+    };
 
     const change = () => {
         setRegister(false);
@@ -85,8 +141,8 @@ export default function Maps() {
                         region={{
                             latitude: regionCoords.lat,
                             longitude: regionCoords.lng,
-                            latitudeDelta: 0.015,
-                            longitudeDelta: 0.015,
+                            latitudeDelta: 0.04864195044303443,
+                            longitudeDelta: 0.040142817690068,
                         }}
                     >
                         <Marker coordinate={{
@@ -111,16 +167,58 @@ export default function Maps() {
                             fetchDetails={true}
                             styles={{ listView: { height: 100 } }}
                             onPress={onPress}
-
                         />
                         <Image style={styles.buttonImagemIconStyle2} source={require('../../assets/pesquisa.png')} />
                     </View>
-                    <TouchableOpacity style={styles.button} onPress={() => eletropostos()}>
-                        <Text style={styles.buttonText}>Localizar estações mais próximas</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSecond} onPress={() => setRegister(true)}>
-                        <Text style={styles.buttonText}>Cadastrar nova estação de recarga</Text>
-                    </TouchableOpacity>
+                    <Animated.ScrollView
+                        horizontal
+                        scrollEventThrottle={1}
+                        showsHorizontalScrollIndicator={false}
+                        snapToInterval={CARD_WIDTH}
+                        style={styles.scrollView}
+                        contentContainerStyle={styles.endPadding}
+                    //onScroll={Animated.event(
+                    //[
+                    //{
+                    // nativeEvent: {
+                    // contentOffset: {
+                    //   x: this.animation,
+                    //},
+                    //},
+                    //</Animatable.View>},
+                    //  ],
+                    //</View> { useNativeDriver: true }
+                    //  )}
+                    >
+                        {state.markers.map((marker, index) => (
+                            <View style={styles.card} key={index}>
+                                <Image
+                                    source={marker.image}
+                                    style={styles.cardImage}
+                                    resizeMode="cover"
+                                />
+                                <View style={styles.textContent}>
+                                    <Image style={styles.buttonImagemIconStyle} source={require('../../assets/plug.png')} />
+                                    <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
+                                    <StarRating ratings={marker.rating} reviews={marker.reviews} />
+                                    <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
+                                    <View style={styles.button}>
+                                        <TouchableOpacity
+                                            onPress={() => { }}
+                                            style={[styles.signIn, {
+                                                borderColor: '#000',
+                                                borderWidth: 1
+                                            }]}
+                                        >
+                                            <Text style={[styles.textSign, {
+                                                color: '#000'
+                                            }]}>Traçar rota</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        ))}
+                    </Animated.ScrollView>
                 </Animatable.View>
             )}
         </View>
@@ -133,12 +231,44 @@ const styles = StyleSheet.create({
         backgroundColor: '#000000',
     },
     map: {
-        height: '79%',
+        height: '100%',
         width: '100%',
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
+    },
+    chipsScrollView: {
+        position: 'absolute',
+        top: Platform.OS === 'ios' ? 90 : 80,
+        paddingHorizontal: 10
+    },
+    chipsIcon: {
+        marginRight: 5,
+    },
+    chipsItem: {
+        flexDirection: "row",
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        padding: 8,
+        paddingHorizontal: 20,
+        marginHorizontal: 10,
+        height: 35,
+        shadowColor: '#ccc',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 10,
+    },
+    scrollView: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        paddingVertical: 10,
+    },
+    endPadding: {
+        paddingRight: width - CARD_WIDTH,
     },
     card: {
         // padding: 10,
@@ -149,26 +279,11 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         shadowColor: "#000",
         shadowRadius: 5,
-        shadowOpacity: 0.5,
-        shadowOffset: { width: 0, height: 3 },
-        height: 100,
-        width: 100,
+        shadowOpacity: 0.3,
+        shadowOffset: { x: 2, y: -2 },
+        height: CARD_HEIGHT,
+        width: CARD_WIDTH,
         overflow: "hidden",
-    },
-    searchBox: {
-        position: 'absolute',
-        marginTop: Platform.OS === 'ios' ? 40 : 45,
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        width: '90%',
-        alignSelf: 'center',
-        borderRadius: 5,
-        padding: 10,
-        shadowColor: '#ccc',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.5,
-        shadowRadius: 5,
-        elevation: 10
     },
     cardImage: {
         flex: 3,
@@ -189,12 +304,37 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: "#444",
     },
+    searchBox: {
+        position: 'absolute',
+        marginTop: Platform.OS === 'ios' ? 40 : 45,
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        width: '90%',
+        alignSelf: 'center',
+        borderRadius: 5,
+        padding: 10,
+        shadowColor: '#ccc',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 10
+    },
+    markerWrap: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 50,
+        height: 50,
+    },
+    marker: {
+        width: 30,
+        height: 30,
+    },
     containerForm: {
         flex: 5,
         backgroundColor: '#FFFFFF',
-        paddingStart: '5%',
-        paddingTop: '10%',
-        paddingEnd: '5%',
+        paddingStart: '1%',
+        paddingTop: '7%',
+        paddingEnd: '1%',
         height: '60%'
     },
     text: {
@@ -217,15 +357,10 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#E0DCDC',
         borderRadius: 5,
-        paddingVertical: 2,
-        flexDirection: 'row',
-        width: '100%',
-        height: '7%',
+        marginTop: 5,
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 5,
-        marginBottom: 5
     },
     buttonSecond: {
         backgroundColor: '#E0DCDC',
@@ -272,5 +407,16 @@ const styles = StyleSheet.create({
     },
     cabecalho: {
         flexDirection: "row"
+    },
+    signIn: {
+        width: '100%',
+        padding: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3
+    },
+    textSign: {
+        fontSize: 14,
+        fontWeight: 'bold'
     }
 })
