@@ -5,9 +5,10 @@ import * as Animatable from 'react-native-animatable'
 import { db } from '../../config/firebase'
 import Electropost from '../../pages/Electropost'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { useNavigation } from '@react-navigation/native'
 
 export default function RegisterElectropost({ change }) {
-
+    const navigation = useNavigation();
     const [register, setRegister] = useState(false);
 
     const changeData = () => {
