@@ -14,6 +14,8 @@ let latAtual = -29.6015968;
 let longAtual = -52.1840375;
 let latDestino = -29.6466509;
 let longDestino = -52.194076;
+let latDestino2 = -29.6838274;
+let longDestino2 = -52.3336681;
 
 function calculaDistancia(lat1, lon1, lat2, lon2) {
     let R = 6371
@@ -41,30 +43,19 @@ state = {
         },
         {
             coordinate: {
-                latitude: -29.6466509,
-                longitude: -52.194076,
+                latitude: -29.6838274,
+                longitude: -52.3336681,
             },
-            local: "Posto Chama",
-            endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
-            plugs: "Tipo 2",
-            distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino),
-            contato: "(51) 3741-0216"
-        },
-        {
-            coordinate: {
-                latitude: -29.6466509,
-                longitude: -52.194076,
-            },
-            local: "Posto Chama",
-            endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
-            plugs: "Tipo 2",
-            distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino),
-            contato: "(51) 3741-0216"
+            local: "Padaria Lisaruth",
+            endereco: "BR 287, KM 91, Linha Pinheiral, RS, Santa Cruz do Sul",
+            plugs: "Tipo 2, CHAdeMO",
+            distancia: calculaDistancia(latAtual, longAtual, latDestino2, longDestino2),
+            contato: "(51) 3787-1175"
         },
     ],
     region: {
-        latitude: 37.4224938,
-        longitude: -122.086922,
+        latitude: -29.6466509,
+        longitude: -52.194076,
         latitudeDelta: 0.04864195044303443,
         longitudeDelta: 0.040142817690068,
     },
