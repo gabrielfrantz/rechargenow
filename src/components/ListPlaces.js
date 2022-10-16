@@ -1,12 +1,13 @@
-import React from 'react';
+import { React } from 'react'
 import { StyleSheet, View, Text, Dimensions, Animated, Image, TouchableOpacity } from 'react-native';
 import { auth, db } from '../config/firebase';
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 import StarRating from './StarRating';
+import { fetchUserInfoAsync } from 'expo-auth-session';
 
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = 220;
+const CARD_HEIGHT = 240;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
@@ -17,15 +18,32 @@ let longDestino = -52.194076;
 let latDestino2 = -29.6838274;
 let longDestino2 = -52.3336681;
 
+async function carregar() {
+    console.log("entrou carregar")
+    const querySnapshot = await getDocs(collection(db, "electropost"));
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        console.log(doc.data().local);
+    });
+}
+
 function calculaDistancia(lat1, lon1, lat2, lon2) {
     let R = 6371
     let dLat = (lat2 - lat1) * (Math.PI / 180)
     let dLon = (lon2 - lon1) * (Math.PI / 180)
-
     let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     let d = R * c
+    carregar()
     return d.toFixed(1)
+}
+
+function rota() {
+    console.log("abre a tela de google maps")
+}
+
+function fechar() {
+    console.log("fecha o card")
 }
 
 state = {
@@ -39,7 +57,10 @@ state = {
             endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
             plugs: "Tipo 2",
             distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino) + " km",
-            contato: "(51) 3741-0216"
+            contato: "(51) 3741-0216",
+            avaliacao_negativa: 0,
+            avaliacao_positiva: 1,
+
         },
         {
             coordinate: {
@@ -50,7 +71,9 @@ state = {
             endereco: "BR 287, KM 91, Linha Pinheiral, RS, Santa Cruz do Sul",
             plugs: "Tipo 2, CHAdeMO",
             distancia: calculaDistancia(latAtual, longAtual, latDestino2, longDestino2),
-            contato: "(51) 3787-1175"
+            contato: "(51) 3787-1175",
+            avaliacao_negativa: 0,
+            avaliacao_positiva: 1,
         },
     ],
     region: {
@@ -61,7 +84,7 @@ state = {
     },
 };
 
-const ListPlaces = (props) => {
+const ListPlaces = () => {
     return (
         <Animated.ScrollView
             horizontal
@@ -92,10 +115,10 @@ const ListPlaces = (props) => {
                         <Text numberOfLines={1} style={styles.cardDescription}>Plugs:         {marker.plugs}</Text>
                         <Text numberOfLines={1} style={styles.cardDescription}>Telefone:    {marker.contato}</Text>
                         <Text numberOfLines={1} style={styles.cardDescription}>Distância:   {marker.distancia}</Text>
-                        <StarRating ratings={marker.rating} reviews={marker.reviews} />
+                        <Text numberOfLines={1} style={styles.cardDescription}>Avaliação:   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/like.png')} />  {marker.avaliacao_positiva}   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/deslike.png')} />  {marker.avaliacao_negativa}</Text>
                         <View style={styles.button}>
                             <TouchableOpacity
-                                onPress={() => { }}
+                                onPress={() => { rota() }}
                                 style={[styles.signIn, {
                                     borderColor: '#000',
                                     borderWidth: 1
@@ -104,6 +127,18 @@ const ListPlaces = (props) => {
                                 <Text style={[styles.textSign, {
                                     color: '#000'
                                 }]}>Traçar rota</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => { fechar() }}
+                                style={[styles.signIn, {
+                                    borderColor: '#000',
+                                    borderWidth: 1,
+                                    width: 82,
+                                }]}
+                            >
+                                <Text style={[styles.textSign, {
+                                    color: '#000'
+                                }]}>Fechar</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -274,9 +309,10 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch'
     },
     buttonImagemIconStyle2: {
-        margin: 10,
-        height: 30,
-        width: 30,
+        padding: 10,
+        margin: 5,
+        height: 15,
+        width: 15,
         resizeMode: 'stretch'
     },
     input: {

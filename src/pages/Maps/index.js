@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import { React } from 'react'
+import { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform, Animated, ScrollView, Dimensions } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import { Ionicons } from 'react-native-ionicons'
@@ -74,7 +75,6 @@ export default function Maps() {
         console.log(marker)
         getLocation()
     }
-
     useEffect(() => {
         getPosition()
     }, []);
@@ -148,7 +148,7 @@ export default function Maps() {
                                 }]}>Cadastrar nova estação</Text>
                             </TouchableOpacity>
                         </View>
-                    ) : <ListPlaces>2</ListPlaces>}
+                    ) : <ListPlaces></ListPlaces>}
                 </Animatable.View>
             )}
         </View>
