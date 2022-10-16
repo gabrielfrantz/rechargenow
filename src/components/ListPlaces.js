@@ -1,55 +1,68 @@
 import React from 'react';
 import { StyleSheet, View, Text, Dimensions, Animated, Image, TouchableOpacity } from 'react-native';
+import { auth, db } from '../config/firebase';
+import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 import StarRating from './StarRating';
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
-const Images = [
-    { uri: "https://i.imgur.com/sNam9iJ.jpg" },
-    { uri: "https://i.imgur.com/N7rlQYt.jpg" },
-    { uri: "https://i.imgur.com/UDrH0wm.jpg" },
-    { uri: "https://i.imgur.com/Ka8kNST.jpg" }
-]
+
+let latAtual = -29.6015968;
+let longAtual = -52.1840375;
+let latDestino = -29.6466509;
+let longDestino = -52.194076;
+
+function calculaDistancia(lat1, lon1, lat2, lon2) {
+    let R = 6371
+    let dLat = (lat2 - lat1) * (Math.PI / 180)
+    let dLon = (lon2 - lon1) * (Math.PI / 180)
+
+    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    let d = R * c
+    return d
+}
 
 state = {
     markers: [
         {
             coordinate: {
-                latitude: 37.4224938,
-                longitude: -122.086922,
+                latitude: -29.6466509,
+                longitude: -52.194076,
             },
-            title: "Best Place",
-            description: "This is the best place in Portland",
-            image: Images[0],
+            local: "Posto Chama",
+            endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
+            plugs: "Tipo 2",
+            potencia: "Rápida",
+            distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino),
+            contato: "(51) 3741-0216"
         },
         {
             coordinate: {
-                latitude: 37.4224938,
-                longitude: -122.086922,
+                latitude: -29.6466509,
+                longitude: -52.194076,
             },
-            title: "Second Best Place",
-            description: "This is the second best place in Portland",
-            image: Images[1],
+            local: "Posto Chama",
+            endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
+            plugs: "Tipo 2",
+            potencia: "Rápida",
+            distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino),
+            contato: "(51) 3741-0216"
         },
         {
             coordinate: {
-                latitude: 37.4224938,
-                longitude: -122.086922,
+                latitude: -29.6466509,
+                longitude: -52.194076,
             },
-            title: "Third Best Place",
-            description: "This is the third best place in Portland",
-            image: Images[2],
-        },
-        {
-            coordinate: {
-                latitude: 37.4224938,
-                longitude: -122.086922,
-            },
-            title: "Fourth Best Place",
-            description: "This is the fourth best place in Portland",
-            image: Images[3],
+            local: "Posto Chama",
+            endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
+            plugs: "Tipo 2",
+            potencia: "Rápida",
+            distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino),
+            contato: "(51) 3741-0216"
         },
     ],
     region: {
@@ -60,7 +73,7 @@ state = {
     },
 };
 
-const ListPlaces = () => {
+const ListPlaces = (props) => {
     return (
         <Animated.ScrollView
             horizontal
@@ -84,16 +97,15 @@ const ListPlaces = () => {
         >
             {state.markers.map((marker, index) => (
                 <View style={styles.card} key={index}>
-                    <Image
-                        source={marker.image}
-                        style={styles.cardImage}
-                        resizeMode="cover"
-                    />
                     <View style={styles.textContent}>
-
-                        <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
+                        <Text numberOfLines={1} style={styles.cardtitle}>{marker.local}</Text>
+                        <Text numberOfLines={1} style={styles.cardDescription}>{marker.endereco}</Text>
+                        <Text>____________________________________________</Text>
+                        <Text numberOfLines={1} style={styles.cardDescription}>Plugs:         {marker.plugs}</Text>
+                        <Text numberOfLines={1} style={styles.cardDescription}>Potência:    {marker.potencia}</Text>
+                        <Text numberOfLines={1} style={styles.cardDescription}>Telefone:    {marker.contato}</Text>
+                        <Text numberOfLines={1} style={styles.cardDescription}>Distância:   {marker.distancia}</Text>
                         <StarRating ratings={marker.rating} reviews={marker.reviews} />
-                        <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
                         <View style={styles.button}>
                             <TouchableOpacity
                                 onPress={() => { }}
@@ -176,12 +188,6 @@ const styles = StyleSheet.create({
         width: CARD_WIDTH,
         overflow: "hidden",
     },
-    cardImage: {
-        flex: 3,
-        width: "100%",
-        height: "100%",
-        alignSelf: "center",
-    },
     textContent: {
         flex: 2,
         padding: 10,
@@ -194,6 +200,7 @@ const styles = StyleSheet.create({
     cardDescription: {
         fontSize: 12,
         color: "#444",
+        marginTop: 8
     },
     searchBox: {
         position: 'absolute',

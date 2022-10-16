@@ -24,15 +24,16 @@ export default function Maps() {
     const auth = getAuth();
     const user = auth.currentUser;
     const navigation = useNavigation();
-    const [currentLatitude, setCurrentLatitude] = useState(37.4214938);
-    const [currentLongitude, setCurrentLongitude] = useState(-122.083922);
+    const [currentLatitude, setCurrentLatitude] = useState(-29.6015968);
+    const [currentLongitude, setCurrentLongitude] = useState(-52.1840375);
     const [searchLocation, setSearchLocation] = useState('')
     const [modalVisible, setModalVisible] = useState(false);
     const [watchID, setWatchID] = useState(0);
     const [location, setLocation] = useState(null);
     const [register, setRegister] = useState(false);
-    const [regionCoords, setRegion] = useState({ lat: 37.4214938, lng: -122.083922 });
-    const [marker, setMarker] = useState({ lat: 37.4214938, lng: -122.083922 });
+    const [listAllPlaces, setListAllPlaces] = useState(false);
+    const [regionCoords, setRegion] = useState({ lat: -29.6015968, lng: -52.1840375 });
+    const [marker, setMarker] = useState({ lat: -29.6015968, lng: -52.1840375 });
 
     const onPress = (data, details) => {
         setRegion(details.geometry.location);
@@ -42,6 +43,7 @@ export default function Maps() {
     const change = () => {
         setRegister(false);
     }
+
     const getLocation = () => {
         (async () => {
             const watchID = await Location.watchPositionAsync({})
@@ -49,9 +51,9 @@ export default function Maps() {
         })()
     }
 
-    function eletropostos() {
+    const eletropostos = () => {
         console.log("lista os eletropostos");
-        setModalVisible(true);
+        setListAllPlaces(true);
     }
 
     async function getPosition() {
@@ -100,7 +102,6 @@ export default function Maps() {
                             latitude: marker.lat,
                             longitude: marker.lng
                         }}
-                            image={require('../../assets/marker3.png')}
                         />
                     </MapView>
                     <View style={styles.searchBox}>
@@ -121,32 +122,33 @@ export default function Maps() {
                         />
                         <Image style={styles.buttonImagemIconStyle2} source={require('../../assets/pesquisa.png')} />
                     </View>
-
-                    <View style={styles.scrollView}>
-                        <TouchableOpacity
-                            onPress={() => eletropostos()}
-                            style={[styles.signIn, {
-                                borderColor: '#000',
-                                borderWidth: 1
-                            }]}
-                        >
-                            <Text style={[styles.textSign, {
-                                color: '#000'
-                            }]}>Mostrar estações mais próximas</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => setRegister(true)}
-                            style={[styles.signIn, {
-                                borderColor: '#000',
-                                marginTop: 1,
-                                borderWidth: 1
-                            }]}
-                        >
-                            <Text style={[styles.textSign, {
-                                color: '#000'
-                            }]}>Cadastrar nova estação</Text>
-                        </TouchableOpacity>
-                    </View>
+                    {listAllPlaces !== true ? (
+                        <View style={styles.scrollView}>
+                            <TouchableOpacity
+                                onPress={() => eletropostos()}
+                                style={[styles.signIn, {
+                                    borderColor: '#000',
+                                    borderWidth: 1
+                                }]}
+                            >
+                                <Text style={[styles.textSign, {
+                                    color: '#000'
+                                }]}>Mostrar estações mais próximas</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setRegister(true)}
+                                style={[styles.signIn, {
+                                    borderColor: '#000',
+                                    marginTop: 1,
+                                    borderWidth: 1
+                                }]}
+                            >
+                                <Text style={[styles.textSign, {
+                                    color: '#000'
+                                }]}>Cadastrar nova estação</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : <ListPlaces>2</ListPlaces>}
                 </Animatable.View>
             )}
         </View>
