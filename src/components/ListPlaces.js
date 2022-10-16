@@ -23,7 +23,7 @@ function calculaDistancia(lat1, lon1, lat2, lon2) {
     let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     let d = R * c
-    return d
+    return d.toFixed(1)
 }
 
 state = {
@@ -36,7 +36,17 @@ state = {
             local: "Posto Chama",
             endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
             plugs: "Tipo 2",
-            potencia: "Rápida",
+            distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino) + " km",
+            contato: "(51) 3741-0216"
+        },
+        {
+            coordinate: {
+                latitude: -29.6466509,
+                longitude: -52.194076,
+            },
+            local: "Posto Chama",
+            endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
+            plugs: "Tipo 2",
             distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino),
             contato: "(51) 3741-0216"
         },
@@ -48,19 +58,6 @@ state = {
             local: "Posto Chama",
             endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
             plugs: "Tipo 2",
-            potencia: "Rápida",
-            distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino),
-            contato: "(51) 3741-0216"
-        },
-        {
-            coordinate: {
-                latitude: -29.6466509,
-                longitude: -52.194076,
-            },
-            local: "Posto Chama",
-            endereco: "Rodovia RST 287, 3155, Industrial, RS, Venâncio Aires",
-            plugs: "Tipo 2",
-            potencia: "Rápida",
             distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino),
             contato: "(51) 3741-0216"
         },
@@ -102,7 +99,6 @@ const ListPlaces = (props) => {
                         <Text numberOfLines={1} style={styles.cardDescription}>{marker.endereco}</Text>
                         <Text>____________________________________________</Text>
                         <Text numberOfLines={1} style={styles.cardDescription}>Plugs:         {marker.plugs}</Text>
-                        <Text numberOfLines={1} style={styles.cardDescription}>Potência:    {marker.potencia}</Text>
                         <Text numberOfLines={1} style={styles.cardDescription}>Telefone:    {marker.contato}</Text>
                         <Text numberOfLines={1} style={styles.cardDescription}>Distância:   {marker.distancia}</Text>
                         <StarRating ratings={marker.rating} reviews={marker.reviews} />

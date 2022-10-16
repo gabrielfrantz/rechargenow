@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -37,11 +37,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	star: {
-		color: '#FF8C00'
+		color: '#FF8C00',
+        marginTop: 10
 	},
 	text: {
 		fontSize: 12,
         marginLeft: 5,
         color: '#444',
+        marginTop: 10
 	}
 });
