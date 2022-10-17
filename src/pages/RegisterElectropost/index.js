@@ -6,14 +6,15 @@ import { db } from '../../config/firebase'
 import Electropost from '../../pages/Electropost'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { useNavigation } from '@react-navigation/native'
+import { fetchUserInfoAsync } from 'expo-auth-session'
 
-export default function RegisterElectropost({ change }) {
+export default function RegisterElectropost({ change, setRegister }) {
     const navigation = useNavigation();
-    const [register, setRegister] = useState(false);
+    //const [register, setRegister] = useState(false);
 
-    const changeData = () => {
+    /*const changeData = () => {
         setRegister(false);
-    }
+    }*/
 
     DropDownPicker.setListMode("SCROLLVIEW");
 
@@ -38,6 +39,11 @@ export default function RegisterElectropost({ change }) {
         setContato('')
       }
 
+      function fechar(){
+        console.log("fechar")
+        setRegister(false);
+      }
+
     function newElectropost() {
         console.log(local)
         console.log(endereco)
@@ -60,7 +66,8 @@ export default function RegisterElectropost({ change }) {
             potencia: potencia,
             contato: contato
         })
-        limpar()
+        //limpar()
+        setRegister(false)
     }
 
     const [open, setOpen] = useState(false);
@@ -163,7 +170,7 @@ export default function RegisterElectropost({ change }) {
                     <TouchableOpacity style={styles.button} onPress={() => newElectropost()}>
                         <Text style={styles.buttonText}>Salvar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonGoogle} onPress={change}>
+                    <TouchableOpacity style={styles.buttonGoogle} onPress={() => fechar()}>
                         <Text style={styles.buttonText}>Cancelar</Text>
                     </TouchableOpacity>
                 </ScrollView>

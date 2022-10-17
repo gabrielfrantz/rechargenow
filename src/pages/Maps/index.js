@@ -59,8 +59,9 @@ export default function Maps() {
 
     async function getPosition() {
         let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 50000, maximumAge: 1000 });
-        const latitude = location.coords.latitude
-        const longitude = location.coords.longitude
+        //console.log(location)
+        const latitude = location.coords.latitude ? location.coords.latitude :  -29.6015968
+        const longitude = location.coords.longitude ? location.coords.longitude : -52.1840375
         setRegion({
             latitude: latitude,
             longitude: longitude
@@ -82,7 +83,7 @@ export default function Maps() {
     return (
         <View style={styles.container}>
             {register ? (
-                <RegisterElectropost change={change} />
+                <RegisterElectropost change={change} setRegister={setRegister} />
             ) : (
                 <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
                     <MapView
@@ -148,7 +149,7 @@ export default function Maps() {
                                 }]}>Cadastrar nova estação</Text>
                             </TouchableOpacity>
                         </View>
-                    ) : <ListPlaces></ListPlaces>}
+                    ) : <ListPlaces setListAllPlaces={setListAllPlaces}></ListPlaces>}
                 </Animatable.View>
             )}
         </View>

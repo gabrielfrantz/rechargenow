@@ -1,4 +1,4 @@
-import { React } from 'react'
+import { React, useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Dimensions, Animated, Image, TouchableOpacity } from 'react-native';
 import { auth, db } from '../config/firebase';
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
@@ -18,14 +18,9 @@ let longDestino = -52.194076;
 let latDestino2 = -29.6838274;
 let longDestino2 = -52.3336681;
 
-async function carregar() {
-    console.log("entrou carregar")
-    const querySnapshot = await getDocs(collection(db, "electropost"));
-    querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        console.log(doc.data().local);
-    });
-}
+
+//const [isLoading, setIsLoading] = React.useState(true);
+//const [stateTeste, setStateTeste] = useState()
 
 function calculaDistancia(lat1, lon1, lat2, lon2) {
     let R = 6371
@@ -34,7 +29,7 @@ function calculaDistancia(lat1, lon1, lat2, lon2) {
     let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     let d = R * c
-    carregar()
+    // carregar()
     return d.toFixed(1)
 }
 
@@ -42,8 +37,15 @@ function rota() {
     console.log("abre a tela de google maps")
 }
 
-function fechar() {
-    console.log("fecha o card")
+
+async function carregar() {
+    console.log("entrou carregar")
+    const querySnapshot = await getDocs(collection(db, "electropost"));
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.data().local);
+        //console.log(doc.data().localizacao.latitude)
+    });
 }
 
 state = {
@@ -84,7 +86,13 @@ state = {
     },
 };
 
-const ListPlaces = () => {
+const ListPlaces = (props) => {
+    const { setListAllPlaces } = props;
+
+    function fechar() {
+        setListAllPlaces(false);
+    }
+
     return (
         <Animated.ScrollView
             horizontal
@@ -106,44 +114,45 @@ const ListPlaces = () => {
         //</View> { useNativeDriver: true }
         //  )}
         >
-            {state.markers.map((marker, index) => (
-                <View style={styles.card} key={index}>
-                    <View style={styles.textContent}>
-                        <Text numberOfLines={1} style={styles.cardtitle}>{marker.local}</Text>
-                        <Text numberOfLines={1} style={styles.cardDescription}>{marker.endereco}</Text>
-                        <Text>____________________________________________</Text>
-                        <Text numberOfLines={1} style={styles.cardDescription}>Plugs:         {marker.plugs}</Text>
-                        <Text numberOfLines={1} style={styles.cardDescription}>Telefone:    {marker.contato}</Text>
-                        <Text numberOfLines={1} style={styles.cardDescription}>Distância:   {marker.distancia}</Text>
-                        <Text numberOfLines={1} style={styles.cardDescription}>Avaliação:   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/like.png')} />  {marker.avaliacao_positiva}   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/deslike.png')} />  {marker.avaliacao_negativa}</Text>
-                        <View style={styles.button}>
-                            <TouchableOpacity
-                                onPress={() => { rota() }}
-                                style={[styles.signIn, {
-                                    borderColor: '#000',
-                                    borderWidth: 1
-                                }]}
-                            >
-                                <Text style={[styles.textSign, {
-                                    color: '#000'
-                                }]}>Traçar rota</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => { fechar() }}
-                                style={[styles.signIn, {
-                                    borderColor: '#000',
-                                    borderWidth: 1,
-                                    width: 82,
-                                }]}
-                            >
-                                <Text style={[styles.textSign, {
-                                    color: '#000'
-                                }]}>Fechar</Text>
-                            </TouchableOpacity>
+            {
+                state.markers.map((marker, index) => (
+                    <View style={styles.card} key={index}>
+                        <View style={styles.textContent}>
+                            <Text numberOfLines={1} style={styles.cardtitle}>{marker.local}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}>{marker.endereco}</Text>
+                            <Text>____________________________________________</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}>Plugs:         {marker.plugs}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}>Telefone:    {marker.contato}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}>Distância:   {marker.distancia}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}>Avaliação:   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/like.png')} />  {marker.avaliacao_positiva}   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/deslike.png')} />  {marker.avaliacao_negativa}</Text>
+                            <View style={styles.button}>
+                                <TouchableOpacity
+                                    onPress={() => { rota() }}
+                                    style={[styles.signIn, {
+                                        borderColor: '#000',
+                                        borderWidth: 1
+                                    }]}
+                                >
+                                    <Text style={[styles.textSign, {
+                                        color: '#000'
+                                    }]}>Traçar rota</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => { fechar() }}
+                                    style={[styles.signIn, {
+                                        borderColor: '#000',
+                                        borderWidth: 1,
+                                        width: 82,
+                                    }]}
+                                >
+                                    <Text style={[styles.textSign, {
+                                        color: '#000'
+                                    }]}>Fechar</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                </View>
-            ))}
+                ))}
         </Animated.ScrollView>
     );
 };
