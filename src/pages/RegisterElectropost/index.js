@@ -77,6 +77,8 @@ export default function RegisterElectropost({ change, setRegister }) {
         { label: 'CCS 1', value: 'CCS 1' },
         { label: 'CCS 2', value: 'CCS 2' },
         { label: 'GB/T', value: 'GB/T' },
+        { label: 'J 1772 (Tipo 1)', value: 'J 1772 (Tipo 1)' },
+        { label: 'Mennekes (Tipo 2)', value: 'Mennekes (Tipo 2)' },
         { label: 'Tipo 1', value: 'Tipo 1' },
         { label: 'Tipo 2', value: 'Tipo 2' }
     ]);
