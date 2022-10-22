@@ -208,8 +208,7 @@ const styles = StyleSheet.create({
         // padding: 10,
         elevation: 2,
         backgroundColor: "#FFF",
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+        borderRadius: 20,
         marginHorizontal: 10,
         shadowColor: "#000",
         shadowRadius: 5,
@@ -343,7 +342,7 @@ const styles = StyleSheet.create({
         padding: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 3
+        borderRadius: 5,
     },
     textSign: {
         fontSize: 14,
