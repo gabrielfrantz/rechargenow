@@ -1,6 +1,6 @@
 import { React } from 'react'
 import { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform, Animated, ScrollView, Dimensions } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Platform, Linking, Animated, ScrollView, Dimensions } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import { Ionicons } from 'react-native-ionicons'
 import * as Animatable from 'react-native-animatable'
@@ -69,7 +69,25 @@ export default function Travel() {
 
   const viagem = () => {
     console.log("realiza viagem");
-  }
+    //console.log('open directions')
+    let lat = -29.6466509;
+    let lon = -52.194076;
+    if (Platform === "android" || "web") {
+      let url =
+        `https://www.google.com/maps/dir/?api=1&origin=` +
+        currentLatitude +
+        `,` +
+        currentLongitude +
+        `&destination=` +
+        lat +
+        `,` +
+        lon +
+        `&travelmode=driving`
+        ;
+      console.log(url)
+      Linking.openURL(url)
+    }
+  };
 
   async function getPosition() {
     let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 50000, maximumAge: 1000 });
@@ -180,18 +198,6 @@ export default function Travel() {
               <Text style={[styles.textSign, {
                 color: '#000'
               }]}>Traçar rota de viagem</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => limpar()}
-              style={[styles.signIn, {
-                borderColor: '#000',
-                marginTop: 1,
-                borderWidth: 1
-              }]}
-            >
-              <Text style={[styles.textSign, {
-                color: '#000'
-              }]}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </Animatable.View>
@@ -362,14 +368,11 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     position: "absolute",
-    bottom: 0,
-    left: 17,
-    right: 0,
-    height: '10%',
-    width: '80%',
+    top: 240,
+    left: 100,
+    height: '5%',
+    width: '50%',
     backgroundColor: '#E0DCDC',
-    marginBottom: 22
-
   },
   endPadding: {
     paddingRight: width - CARD_WIDTH,

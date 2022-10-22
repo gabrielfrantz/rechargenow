@@ -7,7 +7,7 @@ import StarRating from './StarRating';
 import { fetchUserInfoAsync } from 'expo-auth-session';
 
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = 240;
+const CARD_HEIGHT = 245;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
@@ -121,10 +121,10 @@ const ListPlaces = (props) => {
                             <Text numberOfLines={1} style={styles.cardtitle}>{marker.local}</Text>
                             <Text numberOfLines={1} style={styles.cardDescription}>{marker.endereco}</Text>
                             <Text>____________________________________________</Text>
-                            <Text numberOfLines={1} style={styles.cardDescription}>Plugs:         {marker.plugs}</Text>
-                            <Text numberOfLines={1} style={styles.cardDescription}>Telefone:    {marker.contato}</Text>
-                            <Text numberOfLines={1} style={styles.cardDescription}>Distância:   {marker.distancia}</Text>
-                            <Text numberOfLines={1} style={styles.cardDescription}>Avaliação:   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/like.png')} />  {marker.avaliacao_positiva}   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/deslike.png')} />  {marker.avaliacao_negativa}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle3} source={require('../assets/plug.png')} /> Plugs:         {marker.plugs}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle2} source={require('../assets/telefone.png')} /> Telefone:    {marker.contato}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle2} source={require('../assets/distancia.png')} /> Distância:   {marker.distancia}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle2} source={require('../assets/estrela.png')} /> Avaliação:   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/like.png')} />  {marker.avaliacao_positiva}   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/deslike.png')} />  {marker.avaliacao_negativa}</Text>
                             <View style={styles.button}>
                                 <TouchableOpacity
                                     onPress={() => { rota() }}
