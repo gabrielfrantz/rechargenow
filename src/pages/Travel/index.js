@@ -53,6 +53,7 @@ export default function Travel() {
   const onPress = (data, details) => {
     setRegion(details.geometry.location);
     setMarker(details.geometry.location);
+    console.log(data.description)
   };
 
   const change = () => {
