@@ -74,11 +74,11 @@ export default function Travel() {
     let lon = -52.194076;
     if (Platform === "android" || "web") {
       let url =
-        `https://www.google.com/maps/dir/?api=1&origin=` +
+        `https://maps.google.com/?saddr=` +
         currentLatitude +
         `,` +
         currentLongitude +
-        `&destination=` +
+        `&daddr=` +
         lat +
         `,` +
         lon +
