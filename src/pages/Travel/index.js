@@ -69,7 +69,6 @@ export default function Travel() {
 
   const viagem = () => {
     console.log("realiza viagem");
-    //console.log('open directions')
     let lat = -29.6838274;
     let lon = -52.3336681;
     let lat2 = -29.6466509;
@@ -79,9 +78,9 @@ export default function Travel() {
     if (Platform === "android" || "web") {
       let url =
         `https://www.google.com/maps/dir/?api=1&origin=` +
-        currentLatitude +
+        -29.6015968 +
         `,` +
-        currentLongitude +
+        -52.1840375 +
         `&destination=` +
         lat +
         `,` +

@@ -18,7 +18,7 @@ export default class Recharge extends Component {
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}> Aponte a câmera para scannear o QR Code </Text>
+            <Text style={styles.buttonText}> Aponte a câmera para escanear o QR Code </Text>
           </TouchableOpacity>
         </View>
       </View>
