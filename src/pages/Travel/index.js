@@ -70,22 +70,34 @@ export default function Travel() {
   const viagem = () => {
     console.log("realiza viagem");
     //console.log('open directions')
-    let lat = -29.6466509;
-    let lon = -52.194076;
+    let lat = -29.6838274;
+    let lon = -52.3336681;
+    let lat2 = -29.6466509;
+    let lon2 = -52.194076;
+    let lat3 = -29.6420082;
+    let lon3 = -52.2007395;
     if (Platform === "android" || "web") {
       let url =
-        `https://maps.google.com/?saddr=` +
+        `https://www.google.com/maps/dir/?api=1&origin=` +
         currentLatitude +
         `,` +
         currentLongitude +
-        `&daddr=` +
+        `&destination=` +
         lat +
         `,` +
         lon +
+        `&waypoints=` +
+        lat3 +
+        `,` +
+        lon3 +
+        `|` +
+        lat2 +
+        `,` +
+        lon2 +
         `&travelmode=driving`
         ;
-      console.log(url)
       Linking.openURL(url)
+      console.log(url)
     }
   };
 
@@ -104,8 +116,8 @@ export default function Travel() {
     })
     setCurrentLatitude(latitude);
     setCurrentLongitude(longitude);
-    console.log(regionCoords)
-    console.log(marker)
+    //console.log(regionCoords)
+    //console.log(marker)
     getLocation()
   }
   useEffect(() => {
