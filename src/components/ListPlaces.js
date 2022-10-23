@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react'
-import { StyleSheet, View, Text, Dimensions, Animated, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Animated, Image, TouchableOpacity, Platform, Linking } from 'react-native';
 import { auth, db } from '../config/firebase';
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
@@ -33,9 +33,25 @@ function calculaDistancia(lat1, lon1, lat2, lon2) {
     return d.toFixed(1)
 }
 
-function rota() {
-    console.log("abre a tela de google maps")
-}
+const rota = () => {
+    console.log("abre a tela de google maps");
+    if (Platform === "android" || "web") {
+        let url =
+            `https://www.google.com/maps/dir/?api=1&origin=` +
+            latAtual +
+            `,` +
+            longAtual +
+            `&destination=` +
+            latDestino +
+            `,` +
+            longDestino +
+            `&travelmode=driving`
+            ;
+        Linking.openURL(url)
+        console.log(url)
+    }
+};
+
 
 
 async function carregar() {
@@ -121,7 +137,7 @@ const ListPlaces = (props) => {
                             <Text numberOfLines={1} style={styles.cardtitle}>{marker.local}</Text>
                             <Text numberOfLines={1} style={styles.cardDescription}>{marker.endereco}</Text>
                             <Text>____________________________________________</Text>
-                            <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle3} source={require('../assets/plug.png')} /> Plugs:         {marker.plugs}</Text>
+                            <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle2} source={require('../assets/plug.png')} /> Plugs:         {marker.plugs}</Text>
                             <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle2} source={require('../assets/telefone.png')} /> Telefone:    {marker.contato}</Text>
                             <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle2} source={require('../assets/distancia.png')} /> Distância:   {marker.distancia}</Text>
                             <Text numberOfLines={1} style={styles.cardDescription}><Image style={styles.buttonImagemIconStyle2} source={require('../assets/estrela.png')} /> Avaliação:   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/like.png')} />  {marker.avaliacao_positiva}   <Image style={styles.buttonImagemIconStyle2} source={require('../assets/deslike.png')} />  {marker.avaliacao_negativa}</Text>
