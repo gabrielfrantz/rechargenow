@@ -8,13 +8,14 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import { useNavigation } from '@react-navigation/native'
 import { fetchUserInfoAsync } from 'expo-auth-session'
 
-export default function RegisterElectropost({ change, setRegister }) {
+export default function RegisterElectropost({ change }) {
     const navigation = useNavigation();
+
     //const [register, setRegister] = useState(false);
 
-    /*const changeData = () => {
-        setRegister(false);
-    }*/
+    //const changeData = () => {
+        //setRegister(false);
+    //}
 
     DropDownPicker.setListMode("SCROLLVIEW");
 
@@ -28,20 +29,9 @@ export default function RegisterElectropost({ change, setRegister }) {
     const [contato, setContato] = useState('')
     const [tipo_plugues, setTipo_plugues] = useState('')
 
-    function limpar() {
-        setLocal('')
-        setEndereco('')
-        setNumero('')
-        setBairro('')
-        setCidade('')
-        setUF('')
-        setPotencia('')
-        setContato('')
-      }
-
-      function fechar(){
+       function fechar(){
         console.log("fechar")
-        setRegister(false);
+        //setRegister(false);
       }
 
     function newElectropost() {
@@ -66,8 +56,7 @@ export default function RegisterElectropost({ change, setRegister }) {
             potencia: potencia,
             contato: contato
         })
-        //limpar()
-        setRegister(false)
+        fechar()
     }
 
     const [open, setOpen] = useState(false);
@@ -172,7 +161,7 @@ export default function RegisterElectropost({ change, setRegister }) {
                     <TouchableOpacity style={styles.button} onPress={() => newElectropost()}>
                         <Text style={styles.buttonText}>Salvar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonGoogle} onPress={() => fechar()}>
+                    <TouchableOpacity style={styles.buttonGoogle} onPress={change}>
                         <Text style={styles.buttonText}>Cancelar</Text>
                     </TouchableOpacity>
                 </ScrollView>

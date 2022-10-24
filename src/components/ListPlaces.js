@@ -49,6 +49,7 @@ const rota = () => {
             ;
         Linking.openURL(url)
         console.log(url)
+        //carregar()
     }
 };
 
@@ -60,7 +61,8 @@ async function carregar() {
     querySnapshot.forEach((doc) => {
         console.log(doc.id, " => ", doc.data());
         //console.log(doc.data().local);
-        //console.log(doc.data().localizacao.latitude)
+        console.log(doc.data().localizacao.latitude)
+        console.log(doc.data().localizacao.longitude)
     });
 }
 

@@ -24,13 +24,13 @@ export default function Maps() {
 
     const auth = getAuth();
     const user = auth.currentUser;
-    const navigation = useNavigation();
+    //const navigation = useNavigation();
     const [currentLatitude, setCurrentLatitude] = useState(-29.6015968);
     const [currentLongitude, setCurrentLongitude] = useState(-52.1840375);
-    const [searchLocation, setSearchLocation] = useState('')
-    const [modalVisible, setModalVisible] = useState(false);
+    //const [searchLocation, setSearchLocation] = useState('')
+    //const [modalVisible, setModalVisible] = useState(false);
     const [watchID, setWatchID] = useState(0);
-    const [location, setLocation] = useState(null);
+    //const [location, setLocation] = useState(null);
     const [register, setRegister] = useState(false);
     const [listAllPlaces, setListAllPlaces] = useState(false);
     const [regionCoords, setRegion] = useState({ lat: -29.6015968, lng: -52.1840375 });
@@ -53,16 +53,15 @@ export default function Maps() {
     }
 
     const eletropostos = () => {
-        console.log("lista os eletropostos");
         setListAllPlaces(true);
     }
     async function getPosition() {
         const { status } = await Location.requestForegroundPermissionsAsync()
         if (status == "granted") {
-            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 50000, maximumAge: 1000 });
+            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, maximumAge: 1000 });
             //console.log(location)
-            const latitude = location.coords.latitude ? location.coords.latitude : -29.6015968
-            const longitude = location.coords.longitude ? location.coords.longitude : -52.1840375
+            const latitude = location.coords.latitude
+            const longitude = location.coords.longitude
             setRegion({
                 latitude: latitude,
                 longitude: longitude
@@ -73,8 +72,6 @@ export default function Maps() {
             })
             setCurrentLatitude(latitude);
             setCurrentLongitude(longitude);
-            console.log(regionCoords)
-            console.log(marker)
             getLocation()
         }
     }
@@ -86,7 +83,7 @@ export default function Maps() {
     return (
         <View style={styles.container}>
             {register ? (
-                <RegisterElectropost change={change} setRegister={setRegister} />
+                <RegisterElectropost change={change} />
             ) : (
                 <Animatable.View animation="fadeInUp" delay={500} style={styles.containerForm}>
                     <MapView
@@ -96,15 +93,15 @@ export default function Maps() {
                         toolbarEnabled={true}
                         zoomControlEnabled={true}
                         region={{
-                            latitude: regionCoords.lat,
-                            longitude: regionCoords.lng,
+                            latitude: marker.lat ? marker.lat : -29.6015968,
+                            longitude: marker.lng ? marker.lng : -52.1840375,
                             latitudeDelta: 0.04864195044303443,
                             longitudeDelta: 0.040142817690068,
                         }}
                     >
                         <Marker coordinate={{
-                            latitude: marker.lat,
-                            longitude: marker.lng
+                            latitude: regionCoords.lat ? regionCoords.lat : -29.6015968,
+                            longitude: regionCoords.lng ? regionCoords.lng: -52.1840375
                         }}
                         />
                     </MapView>
