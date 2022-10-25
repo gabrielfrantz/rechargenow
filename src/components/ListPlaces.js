@@ -4,7 +4,6 @@ import { auth, db } from '../config/firebase';
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, query, where, DocumentReference } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, updateEmail, updatePassword, signInWithEmailAndPassword } from "firebase/auth"
 import StarRating from './StarRating';
-import { fetchUserInfoAsync } from 'expo-auth-session';
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 245;
@@ -18,9 +17,6 @@ let longDestino = -52.194076;
 let latDestino2 = -29.6838274;
 let longDestino2 = -52.3336681;
 
-
-//const [isLoading, setIsLoading] = React.useState(true);
-//const [stateTeste, setStateTeste] = useState()
 
 function calculaDistancia(lat1, lon1, lat2, lon2) {
     let R = 6371
@@ -54,23 +50,46 @@ const rota = () => {
 };
 
 
+const carregar = () => {
+    (async () => {
+        const querySnapshot = await getDocs(collection(db, "electropost"));
+        querySnapshot.forEach((doc) => {
+            //console.log(doc.data());
+            state2 = {
+                markers: [
+                    {
+                        coordinate: {
+                            latitude: doc.data().localizacao.latitude,
+                            longitude: doc.data().localizacao.longitude,
+                        },
+                        local: doc.data().local,
+                        endereco: doc.data().endereco,
+                        plugs: doc.data().plugs[0],
+                        distancia: calculaDistancia(latAtual, longAtual, latDestino, longDestino) + " km",
+                        contato: doc.data().contato,
+                        avaliacao_negativa: 0,
+                        avaliacao_positiva: 1,
 
-async function carregar() {
-    console.log("entrou carregar")
-    const querySnapshot = await getDocs(collection(db, "electropost"));
-    querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        //console.log(doc.data().local);
-        console.log(doc.data().localizacao.latitude)
-        console.log(doc.data().localizacao.longitude)
-    });
+                    },
+                ],
+                region: {
+                    latitude: doc.data().localizacao.latitude,
+                    longitude: doc.data().localizacao.longitude,
+                    latitudeDelta: 0.04864195044303443,
+                    longitudeDelta: 0.040142817690068,
+                },
+            };
+            //console.log(doc.data().localizacao.latitude)
+            //console.log(doc.data().localizacao.longitude)
+        })();
+    })
 }
 
 state = {
     markers: [
         {
             coordinate: {
-                latitude: -29.6466509,
+                latitude: -29.6838274,
                 longitude: -52.194076,
             },
             local: "Posto Chama",

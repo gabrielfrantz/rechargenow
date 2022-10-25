@@ -38,9 +38,32 @@ export default function Travel() {
   const [listAllPlaces, setListAllPlaces] = useState(false);
   const [regionCoords, setRegion] = useState({ lat: -29.6015968, lng: -52.1840375 });
   const [marker, setMarker] = useState({ lat: -29.6015968, lng: -52.1840375 });
+  const [carro, setCarro] = useState('')
+  const [plugues, setPlugues] = useState('')
+  const [autonomia, setAutonomia] = useState('')
 
   function limpar() {
     console.log("limpa origem e destino e veiculo")
+  }
+
+  async function carregarVeiculo() {
+    const docSnap = await getDoc(doc(db, "user", user.uid));
+    if (user.uid = docSnap.id) {
+      setCarro(docSnap.data().carro);
+      setAutonomia(docSnap.data().carro.bateria)
+      setPlugues(docSnap.data().carro.plugues[0]);
+      console.log(autonomia)
+    }
+  }
+
+  function calculaDistancia(lat1, lon1, lat2, lon2) {
+    let R = 6371
+    let dLat = (lat2 - lat1) * (Math.PI / 180)
+    let dLon = (lon2 - lon1) * (Math.PI / 180)
+    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    let d = R * c
+    return d.toFixed(1)
   }
 
   DropDownPicker.setListMode("SCROLLVIEW");
@@ -53,7 +76,7 @@ export default function Travel() {
   const onPress = (data, details) => {
     setRegion(details.geometry.location);
     setMarker(details.geometry.location);
-    console.log(data.description)
+    //console.log(data.description)
   };
 
   const change = () => {
@@ -121,6 +144,7 @@ export default function Travel() {
   }
   useEffect(() => {
     getPosition()
+    carregarVeiculo()
   }, []);
 
   return (
@@ -136,15 +160,15 @@ export default function Travel() {
             toolbarEnabled={true}
             zoomControlEnabled={true}
             region={{
-              latitude: regionCoords.lat,
-              longitude: regionCoords.lng,
+              latitude: regionCoords.lat ? regionCoords.lat : -29.6015968,
+              longitude: regionCoords.lng ? regionCoords.lng: -52.1840375,
               latitudeDelta: 0.04864195044303443,
               longitudeDelta: 0.040142817690068,
             }}
           >
             <Marker coordinate={{
-              latitude: marker.lat,
-              longitude: marker.lng
+              latitude: marker.lat ? marker.lat : -29.6015968,
+              longitude: marker.lng ? marker.lng : -52.1840375,
             }}
             />
           </MapView>

@@ -60,8 +60,8 @@ export default function Maps() {
         if (status == "granted") {
             let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true, maximumAge: 1000 });
             //console.log(location)
-            const latitude = location.coords.latitude
-            const longitude = location.coords.longitude
+            const latitude = location.coords.latitude ? location.coords.latitude : -29.6015968
+            const longitude = location.coords.longitude ? location.coords.longitude : -52.1840375
             setRegion({
                 latitude: latitude,
                 longitude: longitude
