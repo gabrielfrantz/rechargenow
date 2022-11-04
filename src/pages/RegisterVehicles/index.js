@@ -117,7 +117,7 @@ export default function RegisterVehicles({ change }) {
                         value={placa}
                         onChangeText={value => setPlaca(value)}
                     />
-                    <Text style={styles.subText}>Capacidade da bateria (kWh)</Text>
+                    <Text style={styles.subText}>Autonomia da bateria (km) (*)</Text>
                     <TextInput
                         style={
                             styles.input

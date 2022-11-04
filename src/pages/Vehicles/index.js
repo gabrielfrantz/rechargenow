@@ -71,7 +71,7 @@ export default function Vehicles() {
               <TextInput
                 style={
                   styles.input3}
-                value={carro.bateria + " kW"}
+                value={carro.bateria + " km"}
                 editable={false}
                 selectTextOnFocus={false}
               //onChangeText={value => setCarro({ ...carro, bateria: value })}
